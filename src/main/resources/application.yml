@@ -1,0 +1,36 @@
+
+
+server:
+  port: 8090
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  application:
+    name: board1
+  messages:
+    basename: messages/commonMessages,messages/itemMessages,messages/errors
+
+  datasource:
+    url: jdbc:oracle:thin:@127.0.0.1:1521:XE
+    username: board
+    password: 1234
+    driver-class-name: oracle.jdbc.OracleDriver
+  thymeleaf:
+    cache: false
+    enabled: true
+    check-template-location: true
+  jpa:
+    hibernate:
+      ddl-auto: create #create/update/none
+      dialect: org.hibernate.dialect.OracleDialect
+    properties:
+      hibernate:
+        #show_sql : true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
