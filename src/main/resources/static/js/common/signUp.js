@@ -30,7 +30,7 @@
 
                 // 서버로 보낼 데이터 객체 생성
                 const formData = {
-                    name: name,
+                    username: name,
                     userId: userId,
                     password: password,
                     phoneNumber: phoneNumber
@@ -46,7 +46,7 @@
                 .then(response => {
                     debugger;
                     if (response.ok) {
-                        return response.json();
+                        return response.text();
                     } else {
                         throw new Error('네트워크 응답이 올바르지 않습니다.');
                     }

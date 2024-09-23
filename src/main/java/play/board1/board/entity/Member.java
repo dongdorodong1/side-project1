@@ -1,6 +1,10 @@
 package play.board1.board.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +14,9 @@ import java.time.LocalDateTime;
         sequenceName = "member_seq",
         initialValue = 1
 )
+@Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id

@@ -19,6 +19,7 @@ public class LoginController {
     }
 
     @PostMapping("/signUp")
+    @ResponseBody
     public String signUp(@RequestBody SignUpMemberDto member) {
         loginService.signUp(member);
 
