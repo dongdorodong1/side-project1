@@ -1,9 +1,17 @@
 package play.board1.common.login.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import play.board1.board.dto.SignUpMemberDto;
+import play.board1.board.entity.Member;
+import play.board1.common.dto.MemberDto;
+import play.board1.common.dto.SignUpMemberDto;
+import play.board1.common.dto.SignInMemberDto;
 import play.board1.common.login.service.LoginService;
 
 @Controller
@@ -12,17 +20,54 @@ import play.board1.common.login.service.LoginService;
 public class LoginController {
 
     private final LoginService loginService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * 회원가입 페이지
+     * @return
+     */
     @GetMapping("/signUp")
     public String signUp() {
         return "common/signUp";
     }
 
+    /**
+     * 회원가입 처리
+     * @return
+     */
     @PostMapping("/signUp")
     @ResponseBody
     public String signUp(@RequestBody SignUpMemberDto member) {
+//        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         loginService.signUp(member);
 
         return "ok";
+    }
+
+    /**
+     * 로그인 화면으로 이동
+     * @return
+     */
+    @GetMapping("/signIn")
+    public String signIn() {
+        return "common/signIn";
+    }
+
+    /**
+     * 로그인 화면으로 이동
+     * @return
+     */
+    @PostMapping("/signIn")
+    @ResponseBody
+    public ResponseEntity<SignInMemberDto> signIn(@RequestBody SignInMemberDto requestMember, HttpSession session) {
+
+        Member findMember = loginService.signIn(requestMember);
+        if(null == requestMember.getUserId()) return null;
+
+        if(null != findMember && requestMember.pwdCheck(findMember.getPassword())) {
+            session.setAttribute("loginMember",findMember);
+            return new ResponseEntity<>(requestMember,HttpStatusCode.valueOf(200));
+        }
+        return null;
     }
 }

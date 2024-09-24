@@ -1,4 +1,4 @@
-package play.board1.board.dto;
+package play.board1.common.dto;
 
 import lombok.*;
 import play.board1.board.entity.Member;

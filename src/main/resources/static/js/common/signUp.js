@@ -8,14 +8,11 @@
             this.bind();
         },
         bind: function() {
-            debugger;
             let signUpBtn = document.getElementById('signUp_confirm');
             signUpBtn.addEventListener('click', this.fn.signUp);
-
         },
         fn : {
             signUp: function() {
-                debugger;
                 // 입력된 폼 데이터 가져오기
                 const name = document.getElementById("signUp_name").value;
                 const userId = document.getElementById("signUp_userId").value;
@@ -55,6 +52,7 @@
                     console.log('서버 응답 데이터:', data);
                     alert("회원가입이 완료되었습니다!");
                     // 회원가입 완료 후 원하는 동작 추가
+                    location.href='/';
                 })
                 .catch(error => {
                     console.error('Fetch 오류:', error);

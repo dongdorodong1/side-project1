@@ -1,8 +1,9 @@
-package play.board1.board.dto;
+package play.board1.common.dto;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import play.board1.common.config.CustomBCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ public class MemberDto {
     private String username;
     private String password;
     private LocalDateTime joinDate;
+
 
     public MemberDto(Long id, String username, String password) {
         this.id = id;

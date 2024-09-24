@@ -3,10 +3,9 @@ package play.board1.board.dto;
 import lombok.Getter;
 import lombok.Setter;
 import play.board1.board.entity.Board;
+import play.board1.common.dto.MemberDto;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;

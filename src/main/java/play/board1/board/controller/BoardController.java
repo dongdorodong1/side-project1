@@ -1,9 +1,6 @@
 package play.board1.board.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,14 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import play.board1.board.dto.BoardCmtInsertDto;
 import play.board1.board.dto.BoardDto;
-import play.board1.board.dto.MemberDto;
 import play.board1.board.dto.Paging;
-import play.board1.board.entity.Board;
 import play.board1.board.service.BoardService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

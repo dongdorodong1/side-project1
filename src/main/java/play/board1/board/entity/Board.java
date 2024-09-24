@@ -3,7 +3,6 @@ package play.board1.board.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import play.board1.board.dto.BoardDto;
-import play.board1.board.dto.MemberDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

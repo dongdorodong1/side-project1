@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/common/signIn.js"></script>
+    <title>천호렌터카</title>
+  <style>
+
+  </style>
+</head>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        window.signIn.init();
+    });
+
+</script>
+<body>
+  <main id="signIn_loginForm">
+    <div>로그인: <input id="signIn_id"/></div>
+    <div>비밀번호: <input id="signIn_password"/></div>
+      <div id="signIn_btns">
+          <button id="signIn_confirm">로그인</button>
+          <button id="signIn_cancel">취소</button>
+      </div>
+  </main>
+</body>
+</html>

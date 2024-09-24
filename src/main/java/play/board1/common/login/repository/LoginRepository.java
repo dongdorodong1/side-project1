@@ -13,4 +13,8 @@ public class LoginRepository {
     public void signUp(Member member) {
         em.persist(member);
     }
+
+    public Member signIn(String userId) {
+        return null;
+    }
 }
