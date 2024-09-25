@@ -35,12 +35,6 @@ public class BoardDto {
         this.recommend = board.getRecommend();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.regDt = board.getRegDt().format(formatter);
-
-        if(board.getComments().size() > 0) {
-            comments = board.getComments().stream()
-                    .map(o -> new BoardCmtInsertDto(o))
-                    .collect(toList());
-        }
     }
     public BoardDto() {
     }

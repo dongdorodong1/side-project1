@@ -27,6 +27,8 @@
   </style>
 </head>
 <body>
+<div th:if="${session.loginMember != null}"><span th:text="${session.loginMember.username}"></span></div>
+<div th:if="${session.loginMember == null}"><a href="/common/signIn">로그인</a></div>
 <table class="table w-75 p-3" style="margin-left: auto; margin-right:auto; margin-top:20px">
   <thead class="table-light">
   <tr>

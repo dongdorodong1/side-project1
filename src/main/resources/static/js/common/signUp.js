@@ -9,7 +9,10 @@
         },
         bind: function() {
             let signUpBtn = document.getElementById('signUp_confirm');
+            let cancelBtn = document.getElementById('signUp_cancel');
+
             signUpBtn.addEventListener('click', this.fn.signUp);
+            cancelBtn.addEventListener('click', this.fn.onCancel);
         },
         fn : {
             signUp: function() {
@@ -58,6 +61,9 @@
                     console.error('Fetch 오류:', error);
                     alert("회원가입에 실패했습니다. 다시 시도해주세요.");
                 });
+            },
+            onCancel: function() {
+                history.back();
             }
         },
         template: {

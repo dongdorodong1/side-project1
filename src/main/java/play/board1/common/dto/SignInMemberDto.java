@@ -9,7 +9,4 @@ import play.board1.common.config.CustomBCryptPasswordEncoder;
 public class SignInMemberDto {
     private String userId;
     private String password;
-    public boolean pwdCheck(String password) {
-        return this.password.equals(password);
-    }
 }

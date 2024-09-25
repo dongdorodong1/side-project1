@@ -5,7 +5,7 @@
     const BoardList = {
         name: 'BoardList',
         paging: {
-            pageNumber: 1, //조회할 페이지 넘버
+            pageNumber: 0, //조회할 페이지 넘버
             pageSize:15, // 한꺼번에 가져올 목록 갯수
             totalCount: 1 //전체 목록 갯수
         },
@@ -33,6 +33,7 @@
               BoardList.fn.selectBoardList();
             },
             selectBoardList: function() {
+                debugger;
                 const me = this;
                 const options = {
                     url: '/board/selectBoardList',

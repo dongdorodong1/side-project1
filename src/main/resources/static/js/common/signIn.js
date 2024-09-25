@@ -9,7 +9,10 @@
         },
         bind: function() {
             let signInBtn = document.getElementById('signIn_confirm');
+            let cancelBtn = document.getElementById('signIn_cancel');
+
             signInBtn.addEventListener('click', this.fn.signIn);
+            cancelBtn.addEventListener('click', this.fn.onCancel);
         },
         fn : {
             signIn: async function() {
@@ -53,6 +56,9 @@
                 }
 
 
+            },
+            onCancel: function() {
+                history.back();
             }
         },
         template: {

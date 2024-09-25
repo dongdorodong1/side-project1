@@ -33,6 +33,7 @@ public class BoardController {
     @PostMapping("/selectBoardList")
     @ResponseBody
     public HashMap<String,Object> selectBoardList(Paging paging) {
+
         return boardService.selectAllAtcl(paging);
     }
     @GetMapping("/boardReg")

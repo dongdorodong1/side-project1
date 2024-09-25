@@ -40,6 +40,7 @@ public class BoardService {
 
     public HashMap<String, Object> selectAllAtcl(Paging paging) {
         PageRequest pageRequest = PageRequest.of(paging.getPageNumber(), paging.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
         Page<Board> boardList = boardRepository.findByPage(pageRequest);
         List<BoardDto> result = boardList.getContent().stream()
                 .map(b -> new BoardDto(b))

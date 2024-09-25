@@ -59,15 +59,26 @@ public class LoginController {
      */
     @PostMapping("/signIn")
     @ResponseBody
-    public ResponseEntity<SignInMemberDto> signIn(@RequestBody SignInMemberDto requestMember, HttpSession session) {
+    public ResponseEntity<MemberDto> signIn(@RequestBody MemberDto requestMember, HttpSession session) {
 
         Member findMember = loginService.signIn(requestMember);
         if(null == requestMember.getUserId()) return null;
 
         if(null != findMember && requestMember.pwdCheck(findMember.getPassword())) {
             session.setAttribute("loginMember",findMember);
-            return new ResponseEntity<>(requestMember,HttpStatusCode.valueOf(200));
+
+            return ResponseEntity.ok(requestMember);
         }
         return null;
+    }
+
+    /**
+     * 로그아웃
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("loginMember");
+        return "/index";
     }
 }

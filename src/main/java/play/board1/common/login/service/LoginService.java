@@ -24,7 +24,7 @@ public class LoginService {
         loginRepository.signUp(member);
     }
 
-    public Member signIn(SignInMemberDto member) {
+    public Member signIn(MemberDto member) {
         Member findMember = memberRepository.findByUserId(member.getUserId());
 
         return findMember;

@@ -30,7 +30,7 @@ public class initData {
         private final EntityManager em;
 
         public void dbInit1() {
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 10; i++) {
                 em.persist(new Board("test게시글","test내용", LocalDateTime.now()));
             }
         }
