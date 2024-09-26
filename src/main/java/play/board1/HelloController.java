@@ -13,4 +13,11 @@ public class HelloController {
 
         return "index";
     }
+
+    @GetMapping("/layout")
+    public String layout(Model model, HttpSession session) {
+        session.getAttribute("loginMember");
+
+        return "layout/content";
+    }
 }

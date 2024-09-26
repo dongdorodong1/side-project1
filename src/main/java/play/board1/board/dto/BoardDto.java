@@ -33,7 +33,7 @@ public class BoardDto {
         this.subject = board.getSubject();
         this.content = board.getContent();
         this.recommend = board.getRecommend();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.regDt = board.getRegDt().format(formatter);
     }
     public BoardDto() {
