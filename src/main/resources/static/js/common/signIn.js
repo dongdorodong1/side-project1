@@ -17,8 +17,8 @@
         fn : {
             signIn: async function() {
                 // 입력된 폼 데이터 가져오기
-                const userId = document.getElementById("signIn_id").value;
-                const password = document.getElementById("signIn_password").value;
+                let userId = document.getElementById("signIn_id").value;
+                let password = document.getElementById("signIn_password").value;
 
                 // 유효성 검사
                 if (!userId || !password) {
@@ -39,12 +39,18 @@
                         },
                         body: JSON.stringify(formData)
                     })
-                debugger;
                     if (!response.ok) {
                         throw new Error('네트워크 응답이 올바르지 않습니다.');
                     }
 
                     const data = await response.text();
+
+                    if(data == null || data == "") {
+                        alert("잘못된 아이디 또는 잘못된 비밀번호 입니다.");
+                        document.getElementById("signIn_id").value = "";
+                        document.getElementById("signIn_password").value = "";
+                        return;
+                    }
                     console.log('서버 응답 데이터:', data);
                     alert("로그인이 완료되었습니다!");
 
@@ -52,7 +58,9 @@
                     location.href = '/';
                 } catch (error) {
                     console.error('Fetch 오류:', error);
-                    alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+                    alert("로그인에 실패했습니다. 다시 시도해주세요.");
+                    userId = "";
+                    password = "";
                 }
 
 

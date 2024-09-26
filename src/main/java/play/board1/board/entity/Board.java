@@ -1,6 +1,8 @@
 package play.board1.board.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import play.board1.board.dto.BoardDto;
 
@@ -9,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
 @Entity
+@AllArgsConstructor
 @SequenceGenerator(
         name="board_seq_gen",
         sequenceName="board_seq",
@@ -22,9 +26,17 @@ public class Board {
     generator = "board_seq_gen")
     @Column(name = "board_id")
     private Long id;
+
+
+     // 게시글 제목
     private String subject;
+
+    // 게시글 내용
     private String content;
+
+    //추천수
     private int recommend;
+    //작성자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -33,7 +45,8 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardComment> comments = new ArrayList<>();
 
-    public Board(String subject, String content, LocalDateTime regDt) {
+    public Board(String subject, String content, Member member, LocalDateTime regDt) {
+        this.member = member;
         this.subject = subject;
         this.content = content;
         this.regDt = regDt;
@@ -53,6 +66,4 @@ public class Board {
         content = dto.getContent();
 
     }
-
-
 }

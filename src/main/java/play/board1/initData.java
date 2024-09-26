@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.board.entity.Board;
+import play.board1.board.entity.Member;
 import play.board1.board.repository.BoardRepository;
 import play.board1.board.service.BoardService;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 //@Component
 @RequiredArgsConstructor
@@ -30,9 +32,9 @@ public class initData {
         private final EntityManager em;
 
         public void dbInit1() {
-            for (int i = 0; i < 10; i++) {
-                em.persist(new Board("test게시글","test내용", LocalDateTime.now()));
-            }
+       /*     for (int i = 0; i < 10; i++) {
+                em.persist(new Board("test게시글","test내용",new Member("test"+ UUID.randomUUID().toString(),"user"+i,"testuser"+i,"1234","테스트"+i,"010-0000-0000"), LocalDateTime.now()));
+            }*/
         }
     }
 }

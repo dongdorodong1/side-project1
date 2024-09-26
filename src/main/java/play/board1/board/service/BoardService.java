@@ -3,7 +3,6 @@ package play.board1.board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +11,12 @@ import play.board1.board.dto.BoardDto;
 import play.board1.board.dto.Paging;
 import play.board1.board.entity.Board;
 import play.board1.board.entity.BoardComment;
+import play.board1.board.entity.Member;
 import play.board1.board.repository.BoardCommentRepository;
 import play.board1.board.repository.BoardJpaRepository;
-import play.board1.board.repository.BoardRepository;
+import play.board1.common.login.repository.MemberRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +30,19 @@ public class BoardService {
 //    private final BoardRepository boardRepository;
     private final BoardJpaRepository boardRepository;
     private final BoardCommentRepository commentRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public void insertAtcl(BoardDto boardDto) {
-        Board board = new Board(boardDto.getSubject(),boardDto.getContent(), LocalDateTime.now());
+
+        Member findMember = memberRepository.findByUserId(boardDto.getMember().getUserId());
+        Board board = Board.builder()
+                .subject(boardDto.getSubject())
+                .content(boardDto.getContent())
+                .member(findMember)
+                .regDt(LocalDateTime.now())
+                .build();
+
         boardRepository.save(board);
     }
 

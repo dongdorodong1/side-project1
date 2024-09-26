@@ -54,18 +54,20 @@ public class LoginController {
     }
 
     /**
-     * 로그인 화면으로 이동
+     * 로그인을 처리한다.
      * @return
      */
     @PostMapping("/signIn")
     @ResponseBody
     public ResponseEntity<MemberDto> signIn(@RequestBody MemberDto requestMember, HttpSession session) {
 
+        //요청받은 회원 Id로 조회
         Member findMember = loginService.signIn(requestMember);
-        if(null == requestMember.getUserId()) return null;
-
+        //
+        if(null == findMember) return null;
         if(null != findMember && requestMember.pwdCheck(findMember.getPassword())) {
-            session.setAttribute("loginMember",findMember);
+            // TODO DTO 정보 업데이트하기
+            session.setAttribute("loginMember",requestMember);
 
             return ResponseEntity.ok(requestMember);
         }

@@ -1,5 +1,6 @@
 package play.board1.board.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import play.board1.board.dto.BoardCmtInsertDto;
 import play.board1.board.dto.BoardDto;
 import play.board1.board.dto.Paging;
 import play.board1.board.service.BoardService;
+import play.board1.common.dto.MemberDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +44,13 @@ public class BoardController {
     }
 
     @PostMapping("/insertAtcl")
-    public @ResponseBody String insertAtcl(BoardDto board) {
-        boardService.insertAtcl(board);
+    public @ResponseBody String insertAtcl(BoardDto boardDto, HttpSession session) {
+        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+
+        // TODO 예외 리팩토링
+        if(null == loginMember) throw new IllegalStateException("잘못된 접근");
+        boardDto.setMember(loginMember);
+        boardService.insertAtcl(boardDto);
         return "ok";
     }
     @PostMapping("/boardView/{id}")
