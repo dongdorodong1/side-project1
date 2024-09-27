@@ -7,10 +7,10 @@
       <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>
 </head>
 <body>
-
+<!-- header -->
+<header th:replace="~{layout/header::header}"></header>
 <!-- content -->
 <th:block layout:fragment="content"></th:block>
-
 <!-- footer -->
 <footer th:replace="~{layout/footer::footer}"></footer>
 </body>

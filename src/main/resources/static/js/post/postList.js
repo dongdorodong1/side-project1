@@ -42,23 +42,12 @@
                     success: function (res, statusText) {
                         debugger;
                         $('#postList_list').html(Mustache.render($('#postList_listTemplate').html(),{postList:res.postList}));
-                        const paging = res.paging;
                         //페이지네이션
                         me.createPage(res.paging);
                     }
                 };
                 $.ajax(options);
             }
-            /*toWrite: function() {
-                var options = {
-                    url: '/post/postReg',
-                    data: null,
-                    type: 'get',
-                    success: function (res, statusText) {
-                    }
-                };
-                $.ajax(options);
-            }*/
         },
         template: {
             pageTemplate: function(paging) {

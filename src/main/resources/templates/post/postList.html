@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+      layout:fragment="content"
+>
 <head>
   <meta charset="UTF-8">
   <title>Post</title>
   <!--jquery-->
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <!--mustache-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.js" integrity="sha512-IDcWx4i9cyu+HgDbPzY7fKV9aOh0Skt1iFFTZype6N1c/Slqwum0UaGX/Ek2ZSS+RNoaGvtGsTPiSVNfMKaffg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.3/mustache.js" integrity="sha512-A97rn6Pguhaw5YmpsTysbAel2wDz5PH76++FiLnA5TBl+bjIiMRyNfl4pzRDuL9EjumB4zgAZ7tvFFNfSmiSsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!--bootstrap-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script type="text/javascript" src="/js/post/postList.js"></script>
@@ -27,16 +32,18 @@
   </style>
 </head>
 <body>
-<div th:if="${session.loginMember != null}"><span th:text="${session.loginMember.userId}"></span></div>
+<div th:if="${session.loginMember != null}"><span th:text="${session.loginMember.username}"> 어서와</span></div>
 <div th:if="${session.loginMember == null}"><a href="/common/signIn">로그인</a></div>
 <table class="table w-75 p-3" style="margin-left: auto; margin-right:auto; margin-top:20px">
   <thead class="table-light">
   <tr>
     <th th:scope="row" class="text-center">번호</th>
     <th th:scope="row" class="text-center">등록일</th>
+    <th th:scope="row" class="text-center">작성자</th>
     <th th:scope="row" class="text-center">제목</th>
     <th th:scope="row" class="text-center">조회수</th>
     <th th:scope="row" class="text-center">추천수</th>
+
   </tr>
   </thead>
   <tbody id="postList_list">
@@ -52,10 +59,12 @@
 <script id="postList_listTemplate" type="text/html">
   {{#postList}}
     <tr>
-      <td class="col-md-2 text-center">{{id}}</td>
+      <td class="col-md-1 text-center">{{id}}</td>
       <td class="col-md-2 text-center">{{regDt}}</td>
-      <td class="col-md-5"><a href="/post/postView/{{id}}" class="_subject">{{subject}}</a></td>
-      <td class="col-md-2 text-center">{{recommend}}</td>
+      <td class="col-md-2 text-center">{{member.username}}</td>
+      <td class="col-md-4"><a href="/post/postView/{{id}}" class="_subject">{{subject}}</a></td>
+      <td class="col-md-1 text-center">조회수</td>
+      <td class="col-md-1 text-center">{{recommend}}</td>
     </tr>
   {{/postList}}
 </script>

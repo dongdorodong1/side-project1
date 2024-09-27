@@ -50,6 +50,7 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(paging.getPageNumber(), paging.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
 
         Page<Post> postList = postRepository.findByPage(pageRequest);
+        //Entity -> DTO
         List<PostDto> result = postList.getContent().stream()
                 .map(b -> new PostDto(b))
                 .collect(toList());
@@ -64,27 +65,11 @@ public class PostService {
         resultMap.put("postList",result);
         resultMap.put("paging",paging);
 
-//        System.out.println(postList.getTotalPages()); // 전체 페이지 수 8
-//        System.out.println(postList.getSize()); // 한페이지에 출력할 갯수15
-//        System.out.println(postList.getTotalElements()); // 목록갯수 111
-//        System.out.println(postList.getNumberOfElements()); //가져온 수  15
-//        for (Post post : postList.getContent()) {
-//            System.out.println(post);
-//        }
-
-
         resultMap.put("paging",paging);
         return resultMap;
     }
 
     public PostDto findPost(Long postId) {
-        /*Optional<Post> findPost = postRepository.findById(postId);
-        PostDto postDto = new PostDto();
-        if(findPost.isPresent()) {
-             postDto = new PostDto(findPost.get());
-        }
-
-        return postDto;*/
         return postRepository.findById(postId)
                 .map(PostDto::new)
                 .orElse(new PostDto());
@@ -92,7 +77,6 @@ public class PostService {
 
     @Transactional
     public Long deletePost(Long id) {
-//        return postRepository.deletePost(id);
         postRepository.deleteById(id);
         return id;
     }
