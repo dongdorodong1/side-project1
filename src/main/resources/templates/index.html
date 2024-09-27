@@ -15,9 +15,8 @@
   <li th:if="${session.loginMember != null}"><a href="/common/logout">로그아웃</a></li>
   <li th:if="${session.loginMember == null}"><a href="/common/signIn">로그인</a></li>
   <li th:if="${session.loginMember == null}"><a href="/common/signUp">회원가입</a></li>
-  <li><a href="/board/boardList">list</a></li>
-  <li th:if="${session.loginMember != null}"><a href="/board/boardReg">reg</a></li>
-  <li><a href="/board/boardView">view</a></li>
+  <li><a href="/post/postList">list</a></li>
+  <li th:if="${session.loginMember != null}"><a href="/post/postReg">reg</a></li>
 </ul>
 </body>
 </html>

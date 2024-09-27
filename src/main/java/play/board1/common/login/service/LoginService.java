@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.common.dto.MemberDto;
-import play.board1.common.dto.SignInMemberDto;
 import play.board1.common.dto.SignUpMemberDto;
-import play.board1.board.entity.Member;
+import play.board1.post.entity.Member;
 import play.board1.common.login.repository.LoginRepository;
 import play.board1.common.login.repository.MemberRepository;
 

@@ -1,7 +1,7 @@
 package play.board1.common.dto;
 
 import lombok.*;
-import play.board1.board.entity.Member;
+import play.board1.post.entity.Member;
 
 import java.time.LocalDateTime;
 

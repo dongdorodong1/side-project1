@@ -3,7 +3,7 @@ package play.board1.common.login.repository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import play.board1.board.entity.Member;
+import play.board1.post.entity.Member;
 
 @Repository
 @RequiredArgsConstructor
