@@ -18,23 +18,23 @@
 
 <body layout:fragment="content">
   <div class="container mt-5">
-    <h1 class="mb-4" th:text="${post.subject}">게시물 제목</h1>
-      <button id="postView_recommend"><i class="fas fa-regular fa-thumbs-up"></i></button>
-    <div class="card" id="postView_info" th:data-id="${post.id}">
-      <div class="card-body">
-<!--        <h5 class="card-title">작성자: <span th:text="${post.member.username}">작성자 이름</span></h5>-->
-        <h6 class="card-subtitle mb-2 text-muted">작성날짜: <span th:text="${post.regDt}">2023-01-01</span></h6>
-        <div>
-          <p class="card-text" th:text="${post.content}">게시물 내용</p>
-        </div>
-        <div>
-          <span>추천수: <span th:text="${post.recommend}">0</span></span>
-<!--          <span>조회수: <span th:text="${post.recommend}">0</span></span>-->
+      <div>
+          <span th:text="${post.member.username}"></span>
+          <span th:text="${post.regDt}"></span>
+          <span th:text="${post.viewCnt}"></span>
+          <span th:text="${post.recommend}"></span>
+      </div>
+      <h1 class="mb-4" th:text="${post.subject}">게시물 제목</h1>
+
+      <div class="card" id="postView_info" th:data-id="${post.id}">
+        <div class="card-body">
+            <p class="card-text" th:text="${post.content}">게시물 내용</p>
         </div>
       </div>
-    </div>
+      <div id="postView_like_btnBox">
+          <button id="postView_recommend" class="border-0 btn-md"><i class="fas fa-regular fa-thumbs-up"></i></button>
+      </div>
       <div class="form-group">
-          <label for="postView_comment">댓글</label>
           <textarea class="form-control" id="postView_comment" rows="3" placeholder="댓글을 입력하세요" required style="resize: none"></textarea>
       </div>
       <ul class="list-group" id="postView_commentList">
@@ -44,12 +44,16 @@
           </li>
       </ul>
       <div class="text-md-end">
-        <button id="postView_commentRegBtn" class="btn btn-primary">댓글 작성</button>
+        <button id="postView_commentRegBtn" class="btn btn-primary"
+                th:if="${session.loginMember != null}">댓글 작성</button>
       </div>
-      <i class="fa-solid fa-left-long"></i>
-    <a href="/post/postList" class="btn btn-primary mt-3 float-right"><i class="fas fa-sharp-duotone fa-solid fa-arrow-left"></i></a>
-    <a th:href="@{/post/updatePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">수정</a>
-    <a th:href="@{/post/deletePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">삭제</a>
+      <div>
+        <a href="/post/postList" class="btn btn-primary mt-3 float-right"><i class="fas fa-sharp-duotone fa-solid fa-arrow-left"></i></a>
+          <th:block th:if="${session.loginMember != null and session.loginMember.userId == post.member.userId}">
+                <a th:href="@{/post/updatePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">수정</a>
+                <a th:href="@{/post/deletePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">삭제</a>
+          </th:block>
+      </div>
   </div>
 
 <script type="text/html" id="postView_cmtTemplate">

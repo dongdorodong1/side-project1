@@ -39,6 +39,7 @@ public class PostDto {
         this.member = memberDto;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         this.regDt = post.getRegDt().format(formatter);
+        this.viewCnt = post.getViewCnt();
     }
     public PostDto() {
     }
