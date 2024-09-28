@@ -28,4 +28,10 @@ public class LoginService {
 
         return findMember;
     }
+
+    public boolean isExistUserByUserId(String userId) {
+        Member findMember = memberRepository.findByUserId(userId);
+
+        return null != findMember;
+    }
 }

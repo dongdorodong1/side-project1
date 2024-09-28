@@ -12,7 +12,7 @@ import play.board1.common.dto.SignUpMemberDto;
 import play.board1.common.login.service.LoginService;
 
 @Controller
-@RequestMapping(value = "/common")
+@RequestMapping(value = "/login")
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -80,6 +80,15 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("loginMember");
-        return "/index";
+        return "redirect:/";
+    }
+
+    /**
+     * 아이디 중복검사
+     * @return
+     */
+    @GetMapping("/checkId")
+    public ResponseEntity<Boolean> checkId(String userId) {
+        return ResponseEntity.ok(loginService.isExistUserByUserId(userId));
     }
 }

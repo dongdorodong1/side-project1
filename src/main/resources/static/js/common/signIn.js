@@ -32,7 +32,7 @@
                     password: password,
                 };
                 try {
-                    const response = await fetch('/common/signIn', {
+                    const response = await fetch('/login/signIn', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -52,7 +52,6 @@
                         return;
                     }
                     console.log('서버 응답 데이터:', data);
-                    alert("로그인이 완료되었습니다!");
 
                     // 로그인 완료 후 원하는 동작 추가
                     location.href = '/';

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- config-->
+<head th:replace="~{layout/config :: config}">
+      <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공통 타이틀</title>
+</head>
+<body>
+<!-- header -->
+<header th:replace="~{layout/header::header}"></header>
+<!-- content -->
+<div id="wrapper">
+<th:block layout:fragment="content"></th:block>
+</div>
+<!-- footer -->
+<footer th:replace="~{layout/footer::footer}"></footer>
+</body>
+</html>

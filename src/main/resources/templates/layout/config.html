@@ -1,12 +1,16 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      th:fragment="config">
-
-<head >
+<head th:fragment="config">
     <meta charset="UTF-8">
-    <title>Title22</title>
+    <title>천호렌터카</title>
+    <script type="text/javascript" src="/js/bootstrap/bootstrap.bundle.js"></script>
+<!--    <script type="text/javascript" src="/js/bootstrap/bootstrap.js"></script>-->
+<!--    <script type="text/javascript" src="/js/bootstrap/bootstrap.esm.js"></script>-->
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common-custom.css"/>
+    <link rel="stylesheet" href="/css/normalize.css"/>
+<!--    fontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+    <!-- 페이지별로 스크립트를 넣기 위한 자리 -->
+    <th:block th:insert="~{::scripts}"></th:block>
 </head>
-<body>
-
-</body>
-</html>

@@ -33,14 +33,12 @@
               PostList.fn.selectPostList();
             },
             selectPostList: function() {
-                debugger;
                 const me = this;
                 const options = {
                     url: '/post/selectPostList',
                     data: PostList.paging,
                     type: 'post',
                     success: function (res, statusText) {
-                        debugger;
                         $('#postList_list').html(Mustache.render($('#postList_listTemplate').html(),{postList:res.postList}));
                         //페이지네이션
                         me.createPage(res.paging);
@@ -54,7 +52,6 @@
                 let pages = "";
                 let pageNum = 1;
                 for (let i = 0; i < paging.totalPages; i++) {
-                    debugger;
                     if(paging.pageNumber == i) {
                         pages += `<a data-page-number="${i}" class="_movePage" style="color: blueviolet">${pageNum}</a> `;
                     } else {

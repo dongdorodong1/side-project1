@@ -17,6 +17,7 @@ public class PostDto {
     private String content;
     private String subject;
     private int recommend;
+    private int viewCnt;
     private MemberDto member;
     private List<PostCmtInsertDto> comments;
     private String regDt;

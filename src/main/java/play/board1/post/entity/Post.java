@@ -26,16 +26,14 @@ public class Post {
     generator = "post_seq_gen")
     @Column(name = "post_id")
     private Long id;
-
-
      // 게시글 제목
     private String subject;
-
     // 게시글 내용
     private String content;
-
     //추천수
     private int recommend;
+    // 조회수
+    private int viewCnt;
     //작성자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

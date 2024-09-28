@@ -1,112 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <script type="text/javascript" src="/js/common/signUp.js"></script>
-    <title>천호렌터카</title>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/loginLayout}"
+      layout:fragment="content"
+>
 
-    <style>
-        /* styles.css */
-        body {font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+    <th:block th:fragment="scripts">
+        <link rel="stylesheet" href="/css/signIn.css"/>
+        <script type="text/javascript" src="/js/common/signUp.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                window.signUp.init();
+            });
 
-        .signup-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
+        </script>
+    </th:block>
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .btn-confirm,
-        .btn-cancel {
-            width: 48%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .btn-confirm {
-            background-color: #4CAF50;
-        }
-
-        .btn-cancel {
-            background-color: #f44336;
-        }
-
-        .btn-confirm:hover {
-            background-color: #45a049;
-        }
-
-        .btn-cancel:hover {
-            background-color: #e53935;
-        }
-    </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            window.signUp.init();
-        });
-
-    </script>
-</head>
 <body>
-<div class="signup-container">
-    <h2>회원가입</h2>
-        <div class="input-group">
+<main class="form-signin">
+    <h1 class="h3 mb-3 fw-normal">회원가입</h1>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="signUp_name" name="name" required placeholder="이름">
             <label for="signUp_name">이름</label>
-            <input type="text" id="signUp_name" name="name" required>
         </div>
-        <div class="input-group">
-            <label for="signUp_userId">ID</label>
-            <input type="text" id="signUp_userId" name="id" required>
-        </div>
-        <div class="input-group">
-            <label for="signUp_passWord">비밀번호</label>
-            <input type="password" id="signUp_passWord" name="password" required>
-        </div>
-        <div class="input-group">
+        <div class="form-floating">
+            <input type="tel" id="signUp_phoneNumber" class="form-control" name="phone" required placeholder="휴대폰 번호">
             <label for="signUp_phoneNumber">휴대폰 번호</label>
-            <input type="tel" id="signUp_phoneNumber" name="phone" required>
+        </div>
+        <div class="form-floating">
+            <input type="text" id="signUp_userId" class="form-control" name="id" required placeholder="아이디">
+            <label for="signUp_userId">아이디</label>
+            <div id="signUp_validIdMsg" class="valid-feedback" style="display:none">
+               사용가능한 아이디입니다
+            </div>
+        </div>
+        <div class="form-floating">
+            <input type="password" id="signUp_passWord" class="form-control" name="password" required placeholder="비밀번호">
+            <label for="signUp_passWord">비밀번호</label>
         </div>
         <div class="button-group">
-            <button id="signUp_confirm" class="btn-confirm">확인</button>
-            <button id="signUp_cancel" class="btn-cancel">취소</button>
+            <button id="signUp_confirm" class="w-40 btn btn-md btn-primary">확인</button>
+            <button id="signUp_cancel" class="w-40 btn btn-md btn-secondary">취소</button>
         </div>
-</div>
+</main>
 </body>
 </html>

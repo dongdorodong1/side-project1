@@ -23,7 +23,7 @@ spring:
     check-template-location: true
   jpa:
     hibernate:
-      ddl-auto: none #create/update/none
+      ddl-auto: none #none/update/none
       dialect: org.hibernate.dialect.OracleDialect
     properties:
       hibernate:
