@@ -1,5 +1,6 @@
 package play.board1.post.dto;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
 import play.board1.post.entity.Member;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter@Setter
 public class PostDto {
 
-    private Long id;
+    private Long postId;
     private String content;
     private String subject;
     private int recommend;
@@ -21,6 +22,8 @@ public class PostDto {
     private MemberDto member;
     private List<PostCmtInsertDto> comments;
     private String regDt;
+    private HttpSession session;
+    private PostLikeDto postLikeDto;
 
     public PostDto(String subject, String content, MemberDto member) {
         this.subject = subject;
@@ -29,7 +32,7 @@ public class PostDto {
 
     }
     public PostDto(Post post) {
-        this.id = post.getId();
+        this.postId = post.getId();
         this.subject = post.getSubject();
         this.content = post.getContent();
         this.recommend = post.getRecommend();

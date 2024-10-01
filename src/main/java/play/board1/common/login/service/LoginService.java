@@ -34,4 +34,7 @@ public class LoginService {
 
         return null != findMember;
     }
+    public Member findMemberByUserId(String userId) {
+        return memberRepository.findByUserId(userId);
+    }
 }

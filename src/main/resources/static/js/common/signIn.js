@@ -51,18 +51,13 @@
                         document.getElementById("signIn_password").value = "";
                         return;
                     }
-                    console.log('서버 응답 데이터:', data);
 
                     // 로그인 완료 후 원하는 동작 추가
                     location.href = '/';
                 } catch (error) {
                     console.error('Fetch 오류:', error);
                     alert("로그인에 실패했습니다. 다시 시도해주세요.");
-                    userId = "";
-                    password = "";
                 }
-
-
             },
             onCancel: function() {
                 history.back();

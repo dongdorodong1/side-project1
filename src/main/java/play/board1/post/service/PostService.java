@@ -1,11 +1,13 @@
 package play.board1.post.service;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import play.board1.common.dto.MemberDto;
 import play.board1.post.dto.PostCmtInsertDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
@@ -15,6 +17,7 @@ import play.board1.post.entity.Member;
 import play.board1.post.repository.PostCommentRepository;
 import play.board1.post.repository.PostJpaRepository;
 import play.board1.common.login.repository.MemberRepository;
+import play.board1.post.repository.PostLikeRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -31,6 +34,7 @@ public class PostService {
     private final PostJpaRepository postRepository;
     private final PostCommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public void insertPost(PostDto postDto) {
@@ -70,9 +74,12 @@ public class PostService {
     }
 
     public PostDto findPost(Long postId) {
-        return postRepository.findById(postId)
+        PostDto postDto = postRepository.findById(postId)
                 .map(PostDto::new)
                 .orElse(new PostDto());
+
+
+        return null;
     }
 
     @Transactional
@@ -83,9 +90,9 @@ public class PostService {
 
     @Transactional
     public Long updatePost(PostDto postDto) {
-        Optional<Post> findPostOptional = postRepository.findById(postDto.getId());
+        Optional<Post> findPostOptional = postRepository.findById(postDto.getPostId());
         findPostOptional.ifPresent(post -> {
-            post.updateAtcl(postDto);
+            post.updatePost(postDto);
         });
         return 1L;
     }
@@ -105,5 +112,18 @@ public class PostService {
         List<PostComment> comments = commentRepository.findCommentListByPostId(postId);
         List<PostCmtInsertDto> cDtos = comments.stream().map(c -> new PostCmtInsertDto(c)).collect(toList());
         return cDtos;
+    }
+
+    @Transactional
+    public int updateRecommend(PostDto postDto) {
+        Optional<Post> post = postRepository.findById(postDto.getPostId());
+        HttpSession session = postDto.getSession();
+        MemberDto sessionMember = (MemberDto)session.getAttribute("loginMember");
+        Member loginMember = memberRepository.findByUserId(sessionMember.getUserId());
+        if(post.isEmpty() || null == session.getAttribute("loginMember") || null == loginMember) {
+            throw new IllegalStateException("없는 게시물입니다.");
+        }
+        //중복 userId 확인
+       return postRepository.updateRecommend(post.get().getId(),loginMember.getId());
     }
 }

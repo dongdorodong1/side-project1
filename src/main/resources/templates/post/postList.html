@@ -47,17 +47,17 @@
 <div id="postList_page" class="w-75 d-grid gap-2 d-md-flex justify-content-md-center" style="margin-left: auto; margin-right:auto;">
   <div>1 2 3 4 5 6 7 8</div>
 </div>
-<div class="button-box">
+<div class="button-box-end">
   <button id="postList_write"class="w-40 btn btn-md btn-primary __align-end" onclick="location.href='/post/postReg'">작성</button>
 </div>
 
 <script id="postList_listTemplate" type="text/html">
   {{#postList}}
     <tr>
-      <td class="text-center">{{id}}</td>
+      <td class="text-center">{{postId}}</td>
       <td class="text-center">{{regDt}}</td>
       <td class="text-center">{{member.username}}</td>
-      <td class="text-start"><a href="/post/postView/{{id}}" class="_subject">{{subject}}</a></td>
+      <td class="text-start"><a href="/post/postView/{{postId}}" class="_subject">{{subject}}</a></td>
       <td class="col-md-1 text-center">조회수</td>
       <td class="col-md-1 text-center">{{recommend}}</td>
     </tr>

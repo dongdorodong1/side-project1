@@ -5,8 +5,16 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import play.board1.common.dto.MemberDto;
+import play.board1.common.dto.SignUpMemberDto;
+import play.board1.common.login.service.LoginService;
+import play.board1.post.dto.PostDto;
+import play.board1.post.entity.Member;
+import play.board1.post.service.PostService;
 
-//@Component
+import java.time.LocalDateTime;
+
+@Component
 @RequiredArgsConstructor
 public class initData {
 
@@ -22,11 +30,12 @@ public class initData {
     @RequiredArgsConstructor
     static class InitService {
         private final EntityManager em;
+        private final LoginService loginService;
+        private final PostService postService;
 
         public void dbInit1() {
-       /*     for (int i = 0; i < 10; i++) {
-                em.persist(new Board("test게시글","test내용",new Member("test"+ UUID.randomUUID().toString(),"user"+i,"testuser"+i,"1234","테스트"+i,"010-0000-0000"), LocalDateTime.now()));
-            }*/
+            loginService.signUp(new SignUpMemberDto("111","유동환","1234","111", LocalDateTime.now()));
+            postService.insertPost(new PostDto("test","111",new MemberDto("111","유동환")));
         }
     }
 }

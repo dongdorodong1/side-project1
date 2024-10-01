@@ -43,6 +43,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostComment> comments = new ArrayList<>();
 
+    private Integer likeCnt;
+
     public Post(String subject, String content, Member member, LocalDateTime regDt) {
         this.member = member;
         this.subject = subject;
@@ -59,7 +61,7 @@ public class Post {
     }
 
     /* 게시글을 수정한다. */
-    public void updateAtcl(PostDto dto) {
+    public void updatePost(PostDto dto) {
         subject = dto.getSubject();
         content = dto.getContent();
 

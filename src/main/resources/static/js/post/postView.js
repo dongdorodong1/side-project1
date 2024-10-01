@@ -11,14 +11,10 @@
         bind: function() {
           $('#postView_commentRegBtn')
               .on('click',this.fn.insertComment);
+            const recommendBtn = document.getElementById('postView_recommend_btn');
+            recommendBtn.addEventListener('click', this.fn.updateRecommend);
         },
         fn : {
-            selectCommentJson: function() {
-
-            },
-            selectCommentForm: function() {
-
-            },
             selectComment: function() {
                 const postId = $('#postView_info').data('id');
                 const promiseGet = url => {
@@ -71,6 +67,33 @@
                      .then(res => {
                          $('#postView_comment').val('');
                          PostView.fn.selectComment()});
+            },
+            updateRecommend: async function() {
+                const postInfoDiv = document.getElementById('postView_info');
+                const postId = postInfoDiv.dataset.id;
+
+                try {
+                    const response = await fetch(`/post/updateRecommend?postId=${postId}`, {
+                        method: 'GET',
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('네트워크 응답이 올바르지 않습니다.');
+                    }
+
+                    const data = await response.text();
+                    debugger;
+                    if(data == "true")  {
+                        const postInfoDiv = document.getElementById('postView_recommend');
+                        postInfoDiv.innerText="1";
+
+                    } else {
+
+                    }
+                } catch (error) {
+                    console.error('Fetch 오류:', error);
+                    alert("로그인에 실패했습니다. 다시 시도해주세요.");
+                }
             }
         },
         folderTree : {

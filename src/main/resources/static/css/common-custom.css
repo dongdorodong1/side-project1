@@ -10,22 +10,26 @@ body {
     /*display: flex;*/
     /*flex-direction: column;*/
 }
-
 #wrapper table{
     width: 100%
 }
-
 footer {
     height: 10rem; /* footer 높이 */
     margin-top: auto; /* footer를 컨텐츠 아래에 고정 */
 }
-
-.button-box {
+.button-box-end {
     display: flex;
     justify-content: flex-end; /* 우측 정렬 */
 }
-
-#postView_like_btnBox {
-    display: flex;
-    justify-content: end;
+.absolute {
+    position: absolute;
+}
+.relative {
+    position: relative;
+}
+.bottom-3\.5 {
+    bottom: 3.5rem;
+}
+.left-1 {
+    left: 1rem;
 }

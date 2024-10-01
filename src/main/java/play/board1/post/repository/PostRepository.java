@@ -44,9 +44,9 @@ public class PostRepository {
         return findPost.getId();
     }
 
- /*   public Long updateAtcl(Board post) {
+ /*   public Long updatePost(Board post) {
         Board updateBoard = em.find(Board.class, post.getId());
-        updateBoard.updateAtcl(post);
+        updateBoard.updatePost(post);
         em.persist(updateBoard);
         return updateBoard.getId();
     }*/

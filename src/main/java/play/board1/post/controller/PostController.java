@@ -32,6 +32,9 @@ public class PostController {
         return "post/postMain";
     }
 
+    /**
+     * 게시글 전체목록을 가져온다.
+     */
     @PostMapping("/selectPostList")
     @ResponseBody
     public HashMap<String,Object> selectPostList(Paging paging) {
@@ -43,6 +46,9 @@ public class PostController {
         return "post/postReg";
     }
 
+    /**
+     * 게시글을 등록한다.
+     */
     @PostMapping("/insertPost")
     public @ResponseBody String insertPost(PostDto postDto, HttpSession session) {
         MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
@@ -53,37 +59,86 @@ public class PostController {
         postService.insertPost(postDto);
         return "ok";
     }
-    @PostMapping("/postView/{id}")
-    public String postView(@PathVariable Long id,Model model) {
-        PostDto post = postService.findPost(id);
+
+    /**
+     * 게시글을 조회한다.
+     * @return
+     */
+    @PostMapping("/postView/{postId}")
+    public String postView(@PathVariable Long postId,Model model) {
+        PostDto post = postService.findPost(postId);
         model.addAttribute("post",post);
         return "post/postView";
     }
+
+    /**
+     * 게시물을 삭제한다.
+     * @param postId
+     * @param model
+     * @return
+     */
     @PostMapping("/deletePost/{id}")
-    public String deletePost(@PathVariable Long id,Model model) {
-        Long deletedPost = postService.deletePost(id);
+    public String deletePost(@PathVariable Long postId,Model model) {
+        Long deletedPost = postService.deletePost(postId);
         return "redirect:/post/postList";
     }
+
+    /**
+     * 게시물 수정화면
+     * @param postId
+     * @param model
+     * @return
+     */
     @GetMapping("/updatePost/{id}")
-    public String postUpdate(@PathVariable Long id,Model model) {
-        PostDto post = postService.findPost(id);
+    public String postUpdate(@PathVariable Long postId,Model model) {
+        PostDto post = postService.findPost(postId);
         model.addAttribute("post",post);
-        return "post/updatePost";
+        return "post/postUpdate";
     }
-    @PostMapping("/updateAtcl")
-    public @ResponseBody String updateAtcl(PostDto postDto) {
+
+    /**
+     * 게시물을 수정한다.
+     * @param postDto
+     * @return
+     */
+    @PostMapping("/updatePost")
+    public @ResponseBody String updatePost(PostDto postDto) {
         Long updatePost = postService.updatePost(postDto);
         return "ok";
     }
+
+    /**
+     * 댓글을 등록한다.
+     * @param cmtDto
+     * @return
+     */
     @PostMapping("/insertComment")
     public @ResponseBody ResponseEntity<Long> insertComment(@RequestBody PostCmtInsertDto cmtDto) {
         Long commentId = postService.insertComment(cmtDto);
         return new ResponseEntity<>(commentId, HttpStatusCode.valueOf(200));
     }
 
+    /**
+     * 게시글에 해당하는 댓글을 가져온다.
+     * @param postId
+     * @return
+     */
     @GetMapping("/selectComment")
     public ResponseEntity<List<PostCmtInsertDto>> selectComment(Long postId) {
         List<PostCmtInsertDto> comments = postService.selectComment(postId);
         return new ResponseEntity<>(comments, HttpStatusCode.valueOf(200));
+    }
+
+    /**
+     * 게시글 추천수를 업데이트한다.
+     * @param postDto
+     * @param session
+     * @return
+     */
+    @GetMapping("/updateRecommend")
+    public ResponseEntity<Boolean> updateRecommend(PostDto postDto,HttpSession session) {
+        postDto.setSession(session);
+        return postService.updateRecommend(postDto) == 1 ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
+
     }
 }

@@ -21,21 +21,26 @@
       <div>
           <span th:text="${post.member.username}"></span>
           <span th:text="${post.regDt}"></span>
-          <span th:text="${post.viewCnt}"></span>
-          <span th:text="${post.recommend}"></span>
+          <span th:text="${post.viewCnt}" id="postView_viewCnt"></span>
+          <span th:text="${post.recommend}" id="postView_recommend"></span>
       </div>
       <h1 class="mb-4" th:text="${post.subject}">게시물 제목</h1>
 
-      <div class="card" id="postView_info" th:data-id="${post.id}">
+      <div class="card" id="postView_info" th:data-id="${post.postId}">
         <div class="card-body">
             <p class="card-text" th:text="${post.content}">게시물 내용</p>
         </div>
       </div>
-      <div id="postView_like_btnBox">
-          <button id="postView_recommend" class="border-0 btn-md"><i class="fas fa-regular fa-thumbs-up"></i></button>
+      <div class="button-box-end">
+          <button id="postView_recommend_btn" class="border-0 btn-md">
+              <i class="fas fa-regular fa-thumbs-up"></i></button>
       </div>
       <div class="form-group">
-          <textarea class="form-control" id="postView_comment" rows="3" placeholder="댓글을 입력하세요" required style="resize: none"></textarea>
+          <textarea class="form-control" id="postView_comment" rows="3" th:attr="placeholder=${session.loginMember != null ? '댓글을 입력하세요' : ''},
+          disabled=${session.loginMember == null ? 'disabled' : null}"required style="resize: none"></textarea>
+          <th:block th:if="${session.loginMember == null}">
+              <p class="relative left-1 bottom-3.5"><span class="text-sm text-gray-500">댓글을 쓰려면 <a href="/login/signIn?returnUrl=login/">로그인</a>이 필요합니다.</span></p>
+          </th:block>
       </div>
       <ul class="list-group" id="postView_commentList">
           <li th:each="comment,rowStat : ${post.comments}" class="list-group-item d-flex justify-content-between align-items-center">
@@ -50,8 +55,8 @@
       <div>
         <a href="/post/postList" class="btn btn-primary mt-3 float-right"><i class="fas fa-sharp-duotone fa-solid fa-arrow-left"></i></a>
           <th:block th:if="${session.loginMember != null and session.loginMember.userId == post.member.userId}">
-                <a th:href="@{/post/updatePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">수정</a>
-                <a th:href="@{/post/deletePost/{id}(id=${post.id})}" class="btn btn-primary mt-3 float-right">삭제</a>
+                <a th:href="@{/post/updatePost/{id}(id=${post.postId})}" class="btn btn-primary mt-3 float-right">수정</a>
+                <a th:href="@{/post/deletePost/{id}(id=${post.postId})}" class="btn btn-primary mt-3 float-right">삭제</a>
           </th:block>
       </div>
   </div>

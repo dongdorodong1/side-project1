@@ -17,7 +17,7 @@
                       content = $('#postUpdate_content').val();
                 const id = $('#postUpdate_write').data('id');
                 const options = {
-                    url: '/post/updateAtcl',
+                    url: '/post/updatePost',
                     data: {subject: subject, content: content,id:id},
                     type: 'post',
                     success: function (res, statusText) {
