@@ -12,7 +12,7 @@
           $('#postView_commentRegBtn')
               .on('click',this.fn.insertComment);
             const recommendBtn = document.getElementById('postView_recommend_btn');
-            recommendBtn.addEventListener('click', this.fn.updateRecommend);
+            recommendBtn.addEventListener('click', this.fn.addPostLike);
         },
         fn : {
             selectComment: function() {
@@ -68,12 +68,12 @@
                          $('#postView_comment').val('');
                          PostView.fn.selectComment()});
             },
-            updateRecommend: async function() {
+            addPostLike: async function() {
                 const postInfoDiv = document.getElementById('postView_info');
                 const postId = postInfoDiv.dataset.id;
 
                 try {
-                    const response = await fetch(`/post/updateRecommend?postId=${postId}`, {
+                    const response = await fetch(`/post/addPostLike?postId=${postId}`, {
                         method: 'GET',
                     });
 
@@ -82,13 +82,12 @@
                     }
 
                     const data = await response.text();
+                    const postInfoDiv = document.getElementById('postView_recommend');
                     debugger;
-                    if(data == "true")  {
-                        const postInfoDiv = document.getElementById('postView_recommend');
-                        postInfoDiv.innerText="1";
-
-                    } else {
-
+                    if(data == '1')  {
+                        postInfoDiv.innerText = parseInt(postInfoDiv.innerText) + 1;
+                    } else if(data == '2'){
+                        postInfoDiv.innerText = parseInt(postInfoDiv.innerText) - 1;
                     }
                 } catch (error) {
                     console.error('Fetch 오류:', error);

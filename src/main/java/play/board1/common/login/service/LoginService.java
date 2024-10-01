@@ -9,6 +9,8 @@ import play.board1.post.entity.Member;
 import play.board1.common.login.repository.LoginRepository;
 import play.board1.common.login.repository.MemberRepository;
 
+import java.util.Optional;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,17 +26,19 @@ public class LoginService {
     }
 
     public Member signIn(MemberDto member) {
-        Member findMember = memberRepository.findByUserId(member.getUserId());
+        Optional<Member> findMember = memberRepository.findByUserId(member.getUserId());
+        findMember.orElseThrow(() -> new IllegalStateException());
 
-        return findMember;
+        return findMember.get();
     }
 
     public boolean isExistUserByUserId(String userId) {
-        Member findMember = memberRepository.findByUserId(userId);
+        Optional<Member> findMember = memberRepository.findByUserId(userId);
+        findMember.orElseThrow(() -> new IllegalStateException());
 
-        return null != findMember;
+        return !findMember.isEmpty();
     }
-    public Member findMemberByUserId(String userId) {
+    public Optional<Member> findMemberByUserId(String userId) {
         return memberRepository.findByUserId(userId);
     }
 }

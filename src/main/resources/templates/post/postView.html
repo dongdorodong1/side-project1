@@ -20,9 +20,9 @@
   <div class="container mt-5">
       <div>
           <span th:text="${post.member.username}"></span>
-          <span th:text="${post.regDt}"></span>
-          <span th:text="${post.viewCnt}" id="postView_viewCnt"></span>
-          <span th:text="${post.recommend}" id="postView_recommend"></span>
+          <span>등록일</span><span th:text="${post.regDt}"></span>
+          <span>조회수</span><span th:text="${post.viewCnt}" id="postView_viewCnt"></span>
+          <span>추천수</span><span th:text="${post.likeCnt}" id="postView_recommend"></span>
       </div>
       <h1 class="mb-4" th:text="${post.subject}">게시물 제목</h1>
 

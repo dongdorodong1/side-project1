@@ -14,6 +14,7 @@ import play.board1.post.dto.Paging;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.Member;
+import play.board1.post.entity.PostLike;
 import play.board1.post.repository.PostCommentRepository;
 import play.board1.post.repository.PostJpaRepository;
 import play.board1.common.login.repository.MemberRepository;
@@ -39,11 +40,13 @@ public class PostService {
     @Transactional
     public void insertPost(PostDto postDto) {
 
-        Member findMember = memberRepository.findByUserId(postDto.getMember().getUserId());
+        Optional<Member> findMember = memberRepository.findByUserId(postDto.getMember().getUserId());
+        findMember.orElseThrow(() -> new IllegalStateException());
+
         Post post = Post.builder()
                 .subject(postDto.getSubject())
                 .content(postDto.getContent())
-                .member(findMember)
+                .member(findMember.get())
                 .regDt(LocalDateTime.now())
                 .build();
 
@@ -74,12 +77,14 @@ public class PostService {
     }
 
     public PostDto findPost(Long postId) {
+        // TODO 예외 처리 공부필요
         PostDto postDto = postRepository.findById(postId)
                 .map(PostDto::new)
-                .orElse(new PostDto());
+                .orElseThrow(() -> new IllegalStateException("Post not found"));
+        int likeCount = postLikeRepository.countLikesByPostId(postId);
+        postDto.setLikeCnt(likeCount);
 
-
-        return null;
+        return postDto;
     }
 
     @Transactional
@@ -115,15 +120,25 @@ public class PostService {
     }
 
     @Transactional
-    public int updateRecommend(PostDto postDto) {
-        Optional<Post> post = postRepository.findById(postDto.getPostId());
+    public Integer addPostLike(PostDto postDto) {
+        Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
+
         HttpSession session = postDto.getSession();
-        MemberDto sessionMember = (MemberDto)session.getAttribute("loginMember");
-        Member loginMember = memberRepository.findByUserId(sessionMember.getUserId());
-        if(post.isEmpty() || null == session.getAttribute("loginMember") || null == loginMember) {
-            throw new IllegalStateException("없는 게시물입니다.");
+        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute("loginMember"));
+
+//        Member loginMember = sessionMemberOpt
+//                .map(memberDto -> memberRepository.findByUserId(memberDto.getUserId()))
+//                .orElseThrow(() -> new IllegalStateException("로그인 정보가 없습니다."));
+        Optional<Member> loginMember = memberRepository.findByUserId(sessionMemberOpt.get().getUserId());
+        Post post = postOpt
+                .orElseThrow(() -> new IllegalStateException("없는 게시물입니다."));
+        boolean existLikeMember = postLikeRepository.existsByPostIdAndMemberId(post.getId(), loginMember.get().getId());
+
+        if(existLikeMember) {
+            postRepository.deletePostLike(post.getId(),loginMember.get().getId());
+            return 2;
+        } else {
+            return postRepository.addPostLike(post.getId(),loginMember.get().getId());
         }
-        //중복 userId 확인
-       return postRepository.updateRecommend(post.get().getId(),loginMember.getId());
     }
 }

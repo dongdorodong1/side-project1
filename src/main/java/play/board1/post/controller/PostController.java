@@ -135,10 +135,9 @@ public class PostController {
      * @param session
      * @return
      */
-    @GetMapping("/updateRecommend")
-    public ResponseEntity<Boolean> updateRecommend(PostDto postDto,HttpSession session) {
+    @GetMapping("/addPostLike")
+    public ResponseEntity<Integer> addPostLike(PostDto postDto,HttpSession session) {
         postDto.setSession(session);
-        return postService.updateRecommend(postDto) == 1 ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
-
+        return ResponseEntity.ok(postService.addPostLike(postDto));
     }
 }

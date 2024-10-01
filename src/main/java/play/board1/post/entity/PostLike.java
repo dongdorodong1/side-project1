@@ -20,7 +20,7 @@ public class PostLike {
     @Column(name = "postLike_id")
     private Long id;
 
-    private boolean likeCheck; //중복확인
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -28,6 +28,9 @@ public class PostLike {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Transient
+    private boolean likeCheck; //중복확인
 
     public PostLike(Member member, Post post) {
         this.member = member;

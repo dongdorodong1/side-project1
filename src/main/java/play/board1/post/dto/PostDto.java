@@ -17,13 +17,12 @@ public class PostDto {
     private Long postId;
     private String content;
     private String subject;
-    private int recommend;
+    private int likeCnt;
     private int viewCnt;
     private MemberDto member;
     private List<PostCmtInsertDto> comments;
     private String regDt;
     private HttpSession session;
-    private PostLikeDto postLikeDto;
 
     public PostDto(String subject, String content, MemberDto member) {
         this.subject = subject;
@@ -35,8 +34,8 @@ public class PostDto {
         this.postId = post.getId();
         this.subject = post.getSubject();
         this.content = post.getContent();
-        this.recommend = post.getRecommend();
-        // TODO 이렇게 엔티티를 DTO로 바꿔서 넣는게 맞나..?
+        this.likeCnt = post.getLikes().size();
+        // TODO 이렇게 엔티티를 DTO로 바꿔서 넣는게 맞나..? Mapper 패턴으로 리팩토링
         Member member = post.getMember();
         MemberDto memberDto = new MemberDto(member.getUserId(), member.getUsername());
         this.member = memberDto;

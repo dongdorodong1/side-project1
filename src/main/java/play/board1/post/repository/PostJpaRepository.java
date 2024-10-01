@@ -12,9 +12,15 @@ import java.util.Optional;
 
 public interface PostJpaRepository extends JpaRepository<Post,Long> {
 
-    @Query(value = "select m from Post m")
+    @Query(value = "select p from Post p left join fetch p.likes")
     Page<Post> findByPage(Pageable pageable);
     @Modifying
-    @Query(value = "INSERT INTO Likes (likes_id, post_id, member_id) VALUES (likes_seq.NEXTVAL, :postId, :memberId)", nativeQuery = true)
-    int updateRecommend(@Param("postId") Long postId, @Param("memberId") Long memberId);
+    @Query(value = "INSERT INTO post_like (post_like_id, post_id, member_id) VALUES (post_like_seq.NEXTVAL, :postId, :memberId)", nativeQuery = true)
+    int addPostLike(@Param("postId") Long postId, @Param("memberId") Long memberId);
+    @Query(value = "select p from Post p left join fetch p.likes pl where p.id = :postId")
+    Optional<Post> findByPostId(Long postId);
+
+    @Modifying
+    @Query(value = "delete from post_like where  post_id=:postId and member_id=:memberId", nativeQuery = true)
+    int deletePostLike(@Param("postId") Long postId, @Param("memberId") Long memberId);
 }
