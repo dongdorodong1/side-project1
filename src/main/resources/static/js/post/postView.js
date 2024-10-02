@@ -6,13 +6,15 @@
         name: 'PostView',
         init: function() {
             this.bind();
-            // this.fn.selectComment();
         },
         bind: function() {
           $('#postView_commentRegBtn')
               .on('click',this.fn.insertComment);
+
             const recommendBtn = document.getElementById('postView_recommend_btn');
-            recommendBtn.addEventListener('click', this.fn.addPostLike);
+            if(recommendBtn) {
+                recommendBtn.addEventListener('click', this.fn.addPostLike);
+            }
         },
         fn : {
             selectComment: function() {

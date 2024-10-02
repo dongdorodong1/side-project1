@@ -28,10 +28,10 @@
 
       <div class="card" id="postView_info" th:data-id="${post.postId}">
         <div class="card-body">
-            <p class="card-text" th:text="${post.content}">게시물 내용</p>
+            <p class="card-text" th:utext="${post.content}">게시물 내용</p>
         </div>
       </div>
-      <div class="button-box-end">
+      <div class="button-box-end" th:if="${session.loginMember != null}">
           <button id="postView_recommend_btn" class="border-0 btn-md">
               <i class="fas fa-regular fa-thumbs-up"></i></button>
       </div>
