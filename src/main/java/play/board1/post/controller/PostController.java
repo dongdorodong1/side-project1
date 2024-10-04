@@ -11,12 +11,16 @@ import play.board1.common.session.SessionConst;
 import play.board1.post.dto.PostCmtInsertDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
+import play.board1.post.entity.Post;
 import play.board1.post.service.PostService;
 import play.board1.common.dto.MemberDto;
 
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 게시글 컨트롤러
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/post",method = {RequestMethod.GET,RequestMethod.POST})
@@ -42,8 +46,15 @@ public class PostController {
 
         return postService.selectAllAtcl(paging);
     }
+
+    /**
+     * 게시글 작성 화면으로 이동한다.
+     * @param model
+     * @return
+     */
     @GetMapping("/postReg")
-    public String postReg() {
+    public String postReg(Model model) {
+        model.addAttribute("post",new PostDto());
         return "post/postReg";
     }
 
@@ -65,10 +76,12 @@ public class PostController {
      * 게시글을 조회한다.
      * @return
      */
-    @PostMapping("/postView/{postId}")
-    public String postView(@PathVariable Long postId,Model model) {
-        PostDto post = postService.findPost(postId);
-        model.addAttribute("post",post);
+    @GetMapping("/postView/{postId}")
+    public String postView(@PathVariable Long postId,HttpSession session, Model model) {
+        PostDto postDto = postService.findPost(postId);
+        postDto.setSession(session);
+        postService.insertPostViewLog(postDto);
+        model.addAttribute("post",postDto);
         return "post/postView";
     }
 
@@ -90,11 +103,11 @@ public class PostController {
      * @param model
      * @return
      */
-    @GetMapping("/updatePost/{id}")
+    @GetMapping("/updatePost/{postId}")
     public String postUpdate(@PathVariable Long postId,Model model) {
         PostDto post = postService.findPost(postId);
         model.addAttribute("post",post);
-        return "post/postUpdate";
+        return "post/postReg";
     }
 
     /**
@@ -104,7 +117,7 @@ public class PostController {
      */
     @PostMapping("/updatePost")
     public @ResponseBody String updatePost(PostDto postDto) {
-        Long updatePost = postService.updatePost(postDto);
+        postService.updatePost(postDto);
         return "ok";
     }
 

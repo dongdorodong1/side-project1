@@ -1,12 +1,15 @@
 package play.board1.post.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
+import play.board1.post.entity.PostViewLog;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -65,5 +68,28 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
         return em.createQuery("select c from PostComment c where c.post.id = :postId order by c.id desc", PostComment.class)
                 .setParameter("postId", postId)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<PostViewLog> existViewLog(Long postId, Long memberId) {
+        try {
+            PostViewLog log = em.createQuery("select v from PostViewLog v where v.post.id =:postId and v.member.id = :memberId", PostViewLog.class)
+                    .setParameter("postId", postId)
+                    .setParameter("memberId", memberId)
+                    .getSingleResult();
+            return Optional.of(log);
+        } catch (NoResultException e) {
+            return Optional.empty();  // 결과가 없을 경우 Optional.empty() 반환
+        }
+    }
+
+    @Override
+    public void updateViewLog(PostViewLog postViewLog) {
+        postViewLog.updateViewLog();
+    }
+
+    @Override
+    public void saveViewLog(PostViewLog postViewLog) {
+        em.persist(postViewLog);
     }
 }

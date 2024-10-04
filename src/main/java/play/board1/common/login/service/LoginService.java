@@ -27,16 +27,21 @@ public class LoginService {
 
     public Member signIn(MemberDto member) {
         Optional<Member> findMember = memberRepository.findByUserId(member.getUserId());
-        findMember.orElseThrow(() -> new IllegalStateException());
+        findMember.orElseThrow(IllegalStateException::new);
 
         return findMember.get();
     }
 
+    /**
+     * id를 가진 사용자가 있을 경우
+     * @param userId
+     * @return
+     */
     public boolean isExistUserByUserId(String userId) {
         Optional<Member> findMember = memberRepository.findByUserId(userId);
-        findMember.orElseThrow(() -> new IllegalStateException());
+        findMember.orElseThrow(IllegalStateException::new);
 
-        return !findMember.isEmpty();
+        return true;
     }
     public Optional<Member> findMemberByUserId(String userId) {
         return memberRepository.findByUserId(userId);

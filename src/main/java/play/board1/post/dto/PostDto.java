@@ -23,6 +23,7 @@ public class PostDto {
     private List<PostCmtInsertDto> comments;
     private String regDt;
     private HttpSession session;
+    private PostViewLogDto postViewLogDto;
 
     public PostDto(String subject, String content, MemberDto member) {
         this.subject = subject;

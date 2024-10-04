@@ -1,9 +1,7 @@
 package play.board1.post.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import play.board1.post.dto.PostDto;
 
 import java.time.LocalDateTime;
@@ -13,6 +11,7 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SequenceGenerator(
         name="post_seq_gen",
@@ -26,15 +25,25 @@ public class Post {
     generator = "post_seq_gen")
     @Column(name = "post_id")
     private Long id;
-     // 게시글 제목
+    /**
+     * 게시글 제목
+     */
     private String subject;
-    // 게시글 내용
+    /**
+     * 게시글 내용
+     */
     private String content;
-    //추천수
+    /**
+     * 추천수
+     */
     private int recommend;
-    // 조회수
+    /**
+     * 조회수
+     */
     private int viewCnt;
-    //작성자
+    /**
+     * 작성자
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -60,13 +69,12 @@ public class Post {
         this.content = content;
         this.regDt = regDt;
     }
-    public Post() {
-    }
 
-    /* 게시글을 수정한다. */
+    /**
+     * 게시글을 수정한다.
+     */
     public void updatePost(PostDto dto) {
         subject = dto.getSubject();
         content = dto.getContent();
-
     }
 }

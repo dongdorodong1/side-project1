@@ -2,8 +2,10 @@ package play.board1.post.repository;
 
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
+import play.board1.post.entity.PostViewLog;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostCustomRepository {
 
@@ -21,4 +23,10 @@ public interface PostCustomRepository {
     Long insertComment(PostComment comment);
 
     List<PostComment> selectComment(Long postId);
+
+    Optional<PostViewLog> existViewLog(Long id, Long id1);
+
+    void updateViewLog(PostViewLog postViewLog);
+
+    void saveViewLog(PostViewLog postViewLog);
 }

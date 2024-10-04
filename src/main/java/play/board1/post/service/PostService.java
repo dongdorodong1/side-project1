@@ -12,9 +12,11 @@ import play.board1.common.session.SessionConst;
 import play.board1.post.dto.PostCmtInsertDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
+import play.board1.post.dto.PostViewLogDto;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.Member;
+import play.board1.post.entity.PostViewLog;
 import play.board1.post.repository.PostCommentRepository;
 import play.board1.common.login.repository.MemberRepository;
 import play.board1.post.repository.PostLikeRepository;
@@ -125,10 +127,6 @@ public class PostService {
 
         HttpSession session = postDto.getSession();
         Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
-
-//        Member loginMember = sessionMemberOpt
-//                .map(memberDto -> memberRepository.findByUserId(memberDto.getUserId()))
-//                .orElseThrow(() -> new IllegalStateException("로그인 정보가 없습니다."));
         Optional<Member> loginMember = memberRepository.findByUserId(sessionMemberOpt.get().getUserId());
         Post post = postOpt
                 .orElseThrow(() -> new IllegalStateException("없는 게시물입니다."));
@@ -139,6 +137,31 @@ public class PostService {
             return 2;
         } else {
             return postRepository.addPostLike(post.getId(),loginMember.get().getId());
+        }
+    }
+
+    @Transactional
+    public void insertPostViewLog(PostDto postDto) {
+        Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
+        HttpSession session = postDto.getSession();
+        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
+        Optional<Member> loginMemberOpt = memberRepository.findByUserId(sessionMemberOpt.get().getUserId());
+        Member loginMember;
+
+        //회원이 아닐때 처리하기
+        loginMemberOpt.orElseThrow(() -> new IllegalStateException("없는 회원입니다."));
+        loginMember = loginMemberOpt.get();
+        Post post = postOpt
+                .orElseThrow(() -> new IllegalStateException("없는 게시물입니다."));
+        Optional<PostViewLog> postViewLogOpt = postRepository.existViewLog(post.getId(), loginMember.getId());
+
+        if(postViewLogOpt.isPresent()) {
+            PostViewLog postViewLog = postViewLogOpt.get();
+            postRepository.updateViewLog(postViewLog);
+            postDto.setPostViewLogDto(new PostViewLogDto(postViewLog.getViewCnt()));
+        } else {
+            postRepository.saveViewLog(new PostViewLog(loginMember,post,LocalDateTime.now(),LocalDateTime.now()));
+            postDto.setPostViewLogDto(new PostViewLogDto(1));
         }
     }
 }

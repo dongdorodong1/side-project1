@@ -26,7 +26,7 @@
                     alert('내용을 입력하세요.');
                     return;
                 }
-                content = PostReg.fn.sanitizeInput(content);
+                content = PostReg.fn.replaceContent(content);
                 const options = {
                     url: '/post/insertPost',
                     data: {subject: subject, content: content},
@@ -37,9 +37,11 @@
                 };
                 $.ajax(options);
             },
-            sanitizeInput: function (content) {
+            replaceContent: function (content) {
                 // 1. script 태그를 포함한 모든 HTML 태그 제거
-                const noHTMLTags = content.replace(/<[^>]*>?/gm, '');
+                const noHTMLTags = content
+                                    .replace(/</g, '&lt;')
+                                    .replace(/>/g, '&gt;');
 
                 // 2. 엔터는 <br>로 변환
                 const withLineBreaks = noHTMLTags.replace(/\n/g, '<br>');
