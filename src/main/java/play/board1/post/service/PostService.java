@@ -8,15 +8,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.common.dto.MemberDto;
+import play.board1.common.session.SessionConst;
 import play.board1.post.dto.PostCmtInsertDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.Member;
-import play.board1.post.entity.PostLike;
 import play.board1.post.repository.PostCommentRepository;
-import play.board1.post.repository.PostJpaRepository;
 import play.board1.common.login.repository.MemberRepository;
 import play.board1.post.repository.PostLikeRepository;
 import play.board1.post.repository.PostRepository;
@@ -125,7 +124,7 @@ public class PostService {
         Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
 
         HttpSession session = postDto.getSession();
-        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute("loginMember"));
+        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
 
 //        Member loginMember = sessionMemberOpt
 //                .map(memberDto -> memberRepository.findByUserId(memberDto.getUserId()))

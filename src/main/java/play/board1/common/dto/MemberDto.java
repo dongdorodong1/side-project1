@@ -18,6 +18,7 @@ public class MemberDto {
     private String username;
     private String password;
     private LocalDateTime joinDate;
+    private String redirectURL;
 
     public boolean pwdCheck(String password) {
         return this.password.equals(password);

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import play.board1.common.session.SessionConst;
 import play.board1.post.dto.PostCmtInsertDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
@@ -51,7 +52,7 @@ public class PostController {
      */
     @PostMapping("/insertPost")
     public @ResponseBody String insertPost(PostDto postDto, HttpSession session) {
-        MemberDto loginMember = (MemberDto) session.getAttribute("loginMember");
+        MemberDto loginMember = (MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         // TODO 예외 리팩토링
         if(null == loginMember) throw new IllegalStateException("잘못된 접근");

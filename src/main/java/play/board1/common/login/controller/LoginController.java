@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import play.board1.common.session.SessionConst;
 import play.board1.post.entity.Member;
 import play.board1.common.dto.MemberDto;
 import play.board1.common.dto.SignUpMemberDto;
@@ -20,7 +21,7 @@ public class LoginController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
-     * 회원가입 페이지
+     * 회원가입 화면으로 이동
      * @return
      */
     @GetMapping("/signUp")
@@ -66,7 +67,7 @@ public class LoginController {
             // TODO DTO 정보 업데이트하기
             requestMember.setUsername(findMember.getUsername());
             requestMember.setUserId(findMember.getUserId());
-            session.setAttribute("loginMember",requestMember);
+            session.setAttribute(SessionConst.LOGIN_MEMBER,requestMember);
 
             return ResponseEntity.ok(requestMember);
         }
@@ -79,7 +80,7 @@ public class LoginController {
      */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("loginMember");
+        session.removeAttribute(SessionConst.LOGIN_MEMBER);
         return "redirect:/";
     }
 
