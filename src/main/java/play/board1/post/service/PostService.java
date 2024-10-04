@@ -19,6 +19,7 @@ import play.board1.post.repository.PostCommentRepository;
 import play.board1.post.repository.PostJpaRepository;
 import play.board1.common.login.repository.MemberRepository;
 import play.board1.post.repository.PostLikeRepository;
+import play.board1.post.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 public class PostService {
 //    private final PostRepository postRepository;
-    private final PostJpaRepository postRepository;
+    private final PostRepository postRepository;
     private final PostCommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final PostLikeRepository postLikeRepository;
