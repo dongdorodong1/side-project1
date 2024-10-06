@@ -24,7 +24,7 @@ public interface PostCustomRepository {
 
     List<PostComment> selectComment(Long postId);
 
-    Optional<PostViewLog> existViewLog(Long id, Long id1);
+    Optional<PostViewLog> existViewLog(Long postId, Long memberId);
 
     void updateViewLog(PostViewLog postViewLog);
 

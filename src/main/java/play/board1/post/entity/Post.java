@@ -37,17 +37,33 @@ public class Post {
      * 추천수
      */
     private int recommend;
+
     /**
      * 조회수
      */
     private int viewCnt;
+
+    /**
+     * 게시물 좋아요 수
+     */
+    private int likeCnt;
+
     /**
      * 작성자
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    /**
+     * 게시물 등록일
+     */
     private LocalDateTime regDt;
+
+    /**
+     * 게시물 수정일
+     */
+    private LocalDateTime updDt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostComment> comments = new ArrayList<>();
@@ -55,7 +71,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostLike> likes = new ArrayList<>();
 
-    private Integer likeCnt;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostViewLog> viewLogs = new ArrayList<>();
+
 
     public Post(String subject, String content, Member member, LocalDateTime regDt) {
         this.member = member;
@@ -76,5 +94,9 @@ public class Post {
     public void updatePost(PostDto dto) {
         subject = dto.getSubject();
         content = dto.getContent();
+    }
+
+    public void addViewCnt() {
+        this.viewCnt++;
     }
 }

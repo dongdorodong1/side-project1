@@ -3,6 +3,7 @@ package play.board1.post.dto;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
+import play.board1.common.config.Chrono;
 import play.board1.post.entity.Member;
 import play.board1.post.entity.Post;
 import play.board1.common.dto.MemberDto;
@@ -40,8 +41,10 @@ public class PostDto {
         Member member = post.getMember();
         MemberDto memberDto = new MemberDto(member.getUserId(), member.getUsername());
         this.member = memberDto;
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        this.regDt = post.getRegDt().format(formatter);
+//        this.regDt = post.getRegDt().format(formatter);
+        this.regDt = Chrono.timesAgo(post.getRegDt());
         this.viewCnt = post.getViewCnt();
     }
     public PostDto() {

@@ -72,6 +72,8 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
 
     @Override
     public Optional<PostViewLog> existViewLog(Long postId, Long memberId) {
+
+        // TODO 쿼리 dsl로 is null 적용하기
         try {
             PostViewLog log = em.createQuery("select v from PostViewLog v where v.post.id =:postId and v.member.id = :memberId", PostViewLog.class)
                     .setParameter("postId", postId)

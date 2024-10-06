@@ -93,7 +93,7 @@ public class PostController {
      */
     @PostMapping("/deletePost/{id}")
     public String deletePost(@PathVariable Long postId,Model model) {
-        Long deletedPost = postService.deletePost(postId);
+        postService.deletePost(postId);
         return "redirect:/post/postList";
     }
 

@@ -55,6 +55,11 @@ public class PostService {
         postRepository.save(post);
     }
 
+    /**
+     * 모든 게시글을 가져온다.
+     * @param paging
+     * @return
+     */
     public HashMap<String, Object> selectAllAtcl(Paging paging) {
         PageRequest pageRequest = PageRequest.of(paging.getPageNumber(), paging.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
 
@@ -78,6 +83,11 @@ public class PostService {
         return resultMap;
     }
 
+    /**
+     * 게시글 고유번호로 특정 게시글을 찾는다
+     * @param postId
+     * @return
+     */
     public PostDto findPost(Long postId) {
         // TODO 예외 처리 공부필요
         PostDto postDto = postRepository.findById(postId)
@@ -89,12 +99,22 @@ public class PostService {
         return postDto;
     }
 
+    /**
+     * 게시물을 삭제한다
+     * @param id
+     * @return
+     */
     @Transactional
     public Long deletePost(Long id) {
         postRepository.deleteById(id);
         return id;
     }
 
+    /**
+     * 게시물을 수정한다.
+     * @param postDto
+     * @return
+     */
     @Transactional
     public Long updatePost(PostDto postDto) {
         Optional<Post> findPostOptional = postRepository.findById(postDto.getPostId());
@@ -103,6 +123,12 @@ public class PostService {
         });
         return 1L;
     }
+
+    /**
+     * 게시물에 댓글을 입력한다
+     * @param cmtDto
+     * @return
+     */
     @Transactional
     public Long insertComment(PostCmtInsertDto cmtDto) {
         Optional<Post> findPost = postRepository.findById(cmtDto.getPostId());
@@ -115,12 +141,22 @@ public class PostService {
         return 0L;
     }
 
+    /**
+     * 댓글을 가져온다.
+     * @param postId
+     * @return
+     */
     public List<PostCmtInsertDto> selectComment(Long postId) {
         List<PostComment> comments = commentRepository.findCommentListByPostId(postId);
         List<PostCmtInsertDto> cDtos = comments.stream().map(c -> new PostCmtInsertDto(c)).collect(toList());
         return cDtos;
     }
 
+    /**
+     * 게시물에 좋아요를 추가한다.
+     * @param postDto
+     * @return
+     */
     @Transactional
     public Integer addPostLike(PostDto postDto) {
         Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
@@ -140,20 +176,33 @@ public class PostService {
         }
     }
 
+    /**
+     * 게시물에 조회로그를 입력한다.
+     * @param postDto
+     */
     @Transactional
     public void insertPostViewLog(PostDto postDto) {
         Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
         HttpSession session = postDto.getSession();
-        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
-        Optional<Member> loginMemberOpt = memberRepository.findByUserId(sessionMemberOpt.get().getUserId());
+        Optional<PostViewLog> postViewLogOpt;
         Member loginMember;
+        Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
+        Optional<Member> loginMemberOpt = sessionMemberOpt
+                .flatMap(sessionMember -> memberRepository.findByUserId(sessionMember.getUserId()));
 
-        //회원이 아닐때 처리하기
-        loginMemberOpt.orElseThrow(() -> new IllegalStateException("없는 회원입니다."));
-        loginMember = loginMemberOpt.get();
         Post post = postOpt
                 .orElseThrow(() -> new IllegalStateException("없는 게시물입니다."));
-        Optional<PostViewLog> postViewLogOpt = postRepository.existViewLog(post.getId(), loginMember.getId());
+        if (loginMemberOpt.isPresent()) {
+            loginMember = loginMemberOpt.get();
+            postViewLogOpt = postRepository.existViewLog(post.getId(), loginMember.getId());
+        } else {
+            postViewLogOpt = postRepository.existViewLog(post.getId(), null);
+            loginMember = null;
+        }
+
+        // 조회수 추가
+        post.addViewCnt();
+        postDto.setViewCnt(post.getViewCnt());
 
         if(postViewLogOpt.isPresent()) {
             PostViewLog postViewLog = postViewLogOpt.get();
