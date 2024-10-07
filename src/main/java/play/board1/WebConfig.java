@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/login/signUp",
                         "/post/postList",
                         "/post/selectPostList",
+                        "/post/selectComment",
                         "/post/postView/**",
                         "/login/logout",
                         "/css/**",

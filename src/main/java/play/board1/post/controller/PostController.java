@@ -9,10 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import play.board1.common.exception.MemberException;
 import play.board1.common.session.SessionConst;
-import play.board1.post.dto.PostCmtInsertDto;
+import play.board1.post.dto.PostCommentDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
-import play.board1.post.entity.Post;
 import play.board1.post.service.PostService;
 import play.board1.common.dto.MemberDto;
 
@@ -128,7 +127,8 @@ public class PostController {
      * @return
      */
     @PostMapping("/insertComment")
-    public @ResponseBody ResponseEntity<Long> insertComment(@RequestBody PostCmtInsertDto cmtDto) {
+    public @ResponseBody ResponseEntity<Long> insertComment(@RequestBody PostCommentDto cmtDto, HttpSession session) {
+        cmtDto.setSession(session);
         Long commentId = postService.insertComment(cmtDto);
         return new ResponseEntity<>(commentId, HttpStatusCode.valueOf(200));
     }
@@ -139,8 +139,8 @@ public class PostController {
      * @return
      */
     @GetMapping("/selectComment")
-    public ResponseEntity<List<PostCmtInsertDto>> selectComment(Long postId) {
-        List<PostCmtInsertDto> comments = postService.selectComment(postId);
+    public ResponseEntity<List<PostCommentDto>> selectComment(Long postId) {
+        List<PostCommentDto> comments = postService.selectComment(postId);
         return new ResponseEntity<>(comments, HttpStatusCode.valueOf(200));
     }
 

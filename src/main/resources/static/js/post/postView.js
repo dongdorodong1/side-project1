@@ -6,6 +6,7 @@
         name: 'PostView',
         init: function() {
             this.bind();
+            PostView.fn.selectComment()
         },
         bind: function() {
           $('#postView_commentRegBtn')
@@ -19,6 +20,8 @@
         fn : {
             selectComment: function() {
                 const postId = $('#postView_info').data('id');
+
+
                 const promiseGet = url => {
                     return new Promise((resolve,reject) => {
                         const xhr = new XMLHttpRequest();
@@ -36,7 +39,7 @@
                 };
                 promiseGet(`/post/selectComment?postId=${postId}`)
                     .then(res => {
-
+                    debugger;
                         const cmtList = JSON.parse(res);
                         $('#postView_commentList').html(Mustache.render($('#postView_cmtTemplate').html(),{comments:cmtList}))
                     })

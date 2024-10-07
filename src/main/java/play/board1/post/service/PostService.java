@@ -8,8 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.common.dto.MemberDto;
+import play.board1.common.exception.MemberException;
 import play.board1.common.session.SessionConst;
-import play.board1.post.dto.PostCmtInsertDto;
+import play.board1.post.dto.PostCommentDto;
 import play.board1.post.dto.PostDto;
 import play.board1.post.dto.Paging;
 import play.board1.post.dto.PostViewLogDto;
@@ -130,11 +131,13 @@ public class PostService {
      * @return
      */
     @Transactional
-    public Long insertComment(PostCmtInsertDto cmtDto) {
+    public Long insertComment(PostCommentDto cmtDto) {
         Optional<Post> findPost = postRepository.findById(cmtDto.getPostId());
-        PostComment comment = new PostComment();
+        MemberDto sessionMember = (MemberDto) cmtDto.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+        Member member = memberRepository.findByUserId(sessionMember.getUserId())
+                .orElseThrow(() -> new MemberException("세션이 존재하지 않습니다."));
         if(findPost.isPresent()) {
-            comment = new PostComment(cmtDto.getContent(), findPost.get());
+            PostComment comment = new PostComment(cmtDto.getContent(), findPost.get(),member);
             commentRepository.save(comment);
             return 1L;
         }
@@ -146,9 +149,9 @@ public class PostService {
      * @param postId
      * @return
      */
-    public List<PostCmtInsertDto> selectComment(Long postId) {
+    public List<PostCommentDto> selectComment(Long postId) {
         List<PostComment> comments = commentRepository.findCommentListByPostId(postId);
-        List<PostCmtInsertDto> cDtos = comments.stream().map(c -> new PostCmtInsertDto(c)).collect(toList());
+        List<PostCommentDto> cDtos = comments.stream().map(c -> new PostCommentDto(c)).collect(toList());
         return cDtos;
     }
 

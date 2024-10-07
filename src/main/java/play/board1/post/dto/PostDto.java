@@ -21,7 +21,7 @@ public class PostDto {
     private int likeCnt;
     private int viewCnt;
     private MemberDto member;
-    private List<PostCmtInsertDto> comments;
+    private List<PostCommentDto> comments;
     private String regDt;
     private HttpSession session;
     private PostViewLogDto postViewLogDto;
@@ -41,9 +41,6 @@ public class PostDto {
         Member member = post.getMember();
         MemberDto memberDto = new MemberDto(member.getUserId(), member.getUsername());
         this.member = memberDto;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//        this.regDt = post.getRegDt().format(formatter);
         this.regDt = Chrono.timesAgo(post.getRegDt());
         this.viewCnt = post.getViewCnt();
     }

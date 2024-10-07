@@ -25,12 +25,24 @@ public class PostComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    /**
+     * 수정일
+     */
     private LocalDateTime regDt;
 
-    public PostComment(String content, Post post) {
+    /**
+     * 작성자
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public PostComment(String content, Post post, Member member) {
         this.content = content;
         this.post = post;
         this.regDt = LocalDateTime.now();
+        this.member = member;
     }
 
     public PostComment() {
