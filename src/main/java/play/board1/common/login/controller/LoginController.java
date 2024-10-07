@@ -63,7 +63,7 @@ public class LoginController {
         Member findMember = loginService.signIn(requestMember);
         //
         if(null == findMember) return null;
-        if(null != findMember && requestMember.pwdCheck(findMember.getPassword())) {
+        if(requestMember.pwdCheck(findMember.getPassword())) {
             // TODO DTO 정보 업데이트하기
             requestMember.setUsername(findMember.getUsername());
             requestMember.setUserId(findMember.getUserId());
