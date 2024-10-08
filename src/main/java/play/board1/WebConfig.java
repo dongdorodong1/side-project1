@@ -16,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/","/login/signIn",
                         "/login/signUp",
                         "/post/postList",
+                        "/login/checkId",
                         "/post/selectPostList",
                         "/post/selectComment",
                         "/post/postView/**",

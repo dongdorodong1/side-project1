@@ -7,8 +7,6 @@
 <th:block th:fragment="scripts">
   <!--jquery-->
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-  <!--mustache-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.1/mustache.js" integrity="sha512-IDcWx4i9cyu+HgDbPzY7fKV9aOh0Skt1iFFTZype6N1c/Slqwum0UaGX/Ek2ZSS+RNoaGvtGsTPiSVNfMKaffg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="/js/post/postView.js"></script>
   <script>
     $(document).ready(function() {window.postView.init();})
@@ -20,7 +18,7 @@
   <div class="container mt-5">
       <div class="justify-content-between flex">
           <div>
-          <span th:text="${post.member.username}"></span>
+          <div><strong th:text="${post.member.username}"></strong></div>
           <span>등록일</span><span th:text="${post.regDt}"></span>
           <span>조회수</span><span th:text="${post.viewCnt}" id="postView_viewCnt"></span>
           <span>추천수</span><span th:text="${post.likeCnt}" id="postView_recommend"></span>
@@ -32,38 +30,45 @@
       </div>
       <h1 class="mb-4" th:text="${post.subject}">게시물 제목</h1>
 
-      <div class="card" id="postView_info" th:data-id="${post.postId}">
-        <div class="card-body">
+      <div id="postView_info" th:data-id="${post.postId}">
+        <div class="content-body">
             <p class="card-text" th:utext="${post.content}">게시물 내용</p>
         </div>
       </div>
-      <div class="button-box-end" th:if="${session.loginMember != null}">
-          <button id="postView_recommend_btn" class="border-0 btn-md">
-              <i class="fas fa-regular fa-thumbs-up"></i></button>
+      <div class="button-box-end mt-xl-3" th:if="${session.loginMember != null}">
+          <button id="postView_recommend_btn" class="border-0 fs-5 bg-white btn-color">
+              <i class="fas fa-regular fa-thumbs-up"></i>
+          </button>
       </div>
-      <div class="form-group">
+          <div class="my-5 border-gray-500/30 border-t"></div>
+      <div class="cmt-form-group">
           <textarea class="form-control" id="postView_comment" rows="3" th:attr="placeholder=${session.loginMember != null ? '댓글을 입력하세요' : ''},
           disabled=${session.loginMember == null ? 'disabled' : null}"required style="resize: none"></textarea>
           <th:block th:if="${session.loginMember == null}">
               <p class="relative left-1 bottom-3.5"><span class="text-sm text-gray-500">댓글을 쓰려면 <a href="/login/signIn?returnUrl=login/">로그인</a>이 필요합니다.</span></p>
           </th:block>
+          <div class="text-md-end margin-updn10">
+              <button id="postView_commentRegBtn" class="btn btn-primary"
+                      th:if="${session.loginMember != null}">댓글 작성</button>
+          </div>
       </div>
-      <div class="text-md-end margin-updn10">
-        <button id="postView_commentRegBtn" class="btn btn-primary"
-                th:if="${session.loginMember != null}">댓글 작성</button>
-      </div>
+
       <ul class="list-group" id="postView_commentList"></ul>
       <div>
         <a href="/post/postList" class="btn btn-primary mt-3 float-right"><i class="fas fa-sharp-duotone fa-solid fa-arrow-left"></i></a>
 
       </div>
   </div>
-
 <script type="text/html" id="postView_cmtTemplate">
     {{#comments}}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div><span>{{content}} <button>수정</button><button>삭제</button></span></div>
-            <span>{{regDt}}</span>
+        <li class="list-group-item align-items-center">
+            <div>
+                <div class="flex justify-content-between w-100">
+                    <div><strong>{{memberDto.username}}</strong> <span class="small">{{regDt}}</span></div>
+                    <div><button>수정</button><button>삭제</button></div>
+                </div>
+                <div class="content-pad margin-updn10">{{content}}</div>
+            </div>
         </li>
     {{/comments}}
 </script>

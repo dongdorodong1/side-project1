@@ -151,8 +151,7 @@ public class PostService {
      */
     public List<PostCommentDto> selectComment(Long postId) {
         List<PostComment> comments = commentRepository.findCommentListByPostId(postId);
-        List<PostCommentDto> cDtos = comments.stream().map(c -> new PostCommentDto(c)).collect(toList());
-        return cDtos;
+        return comments.stream().map(PostCommentDto::new).collect(toList());
     }
 
     /**

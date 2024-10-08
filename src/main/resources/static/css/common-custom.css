@@ -39,3 +39,25 @@ footer {
 .left-1 {
     left: 1rem;
 }
+.content-pad {
+    padding: 0.5rem 1rem;
+    border: 1px #adb5bd solid;
+    border-radius: 5px;
+}
+.content-body {
+    margin: 2rem 0;
+    padding: 1rem 1rem;
+}
+.border-t {
+    border-top: 1px solid;
+}
+.border-gray-500\/30 {
+    border-color: hsla(220, 9%, 46%, .3);
+}
+.btn-color {
+    color: #adb5bd
+}
+/*댓글 폼요소*/
+.cmt-form-group {
+    margin-bottom: 3.5rem;
+}
