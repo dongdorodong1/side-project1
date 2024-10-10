@@ -94,4 +94,15 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
     public void saveViewLog(PostViewLog postViewLog) {
         em.persist(postViewLog);
     }
+
+    /**
+     * 게시물의 댓글을 삭제한다.
+     * @param cmntId
+     * @return
+     */
+    @Override
+    public void deleteComment(String cmntId) {
+        PostComment postComment = em.find(PostComment.class, Long.parseLong(cmntId));
+        em.remove(postComment);
+    }
 }

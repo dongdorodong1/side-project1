@@ -134,6 +134,18 @@ public class PostController {
     }
 
     /**
+     * 댓글을 삭제한다.
+     * @param cmntId
+     * @return
+     */
+    @PostMapping("/deleteComment")
+    public @ResponseBody ResponseEntity<String> deleteComment(@RequestBody String cmntId, HttpSession session) {
+
+        postService.deleteComment(cmntId);
+        return new ResponseEntity<>(cmntId, HttpStatusCode.valueOf(200));
+    }
+
+    /**
      * 게시글에 해당하는 댓글을 가져온다.
      * @param postId
      * @return

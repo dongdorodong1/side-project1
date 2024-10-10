@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import play.board1.common.session.SessionConst;
 import play.board1.post.entity.Member;
@@ -47,7 +48,10 @@ public class LoginController {
      * @return
      */
     @GetMapping("/signIn")
-    public String signIn() {
+    public String signIn(String redirectURL, Model model) {
+        if(null != redirectURL) {
+            model.addAttribute("redirectURL", redirectURL);
+        }
         return "common/signIn";
     }
 

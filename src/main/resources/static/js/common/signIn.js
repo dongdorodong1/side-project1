@@ -31,6 +31,9 @@
                     userId: userId,
                     password: password,
                 };
+                const redirectURL = document.getElementById("signIn_redirectURL").value;
+                if("" !== redirectURL) formData.redirectURL = redirectURL;
+
                 try {
                     const response = await fetch('/login/signIn', {
                         method: 'POST',
@@ -43,7 +46,7 @@
                         throw new Error('네트워크 응답이 올바르지 않습니다.');
                     }
 
-                    const data = await response.text();
+                    const data = await response.json();
 
                     if(data == null || data == "") {
                         alert("잘못된 아이디 또는 잘못된 비밀번호 입니다.");
@@ -51,9 +54,8 @@
                         document.getElementById("signIn_password").value = "";
                         return;
                     }
-
-                    // 로그인 완료 후 원하는 동작 추가
-                    location.href = '/';
+                    if(cmm.string.isNotEmpty(data.redirectURL)) location.href = data.redirectURL
+                    else location.href = '/';
                 } catch (error) {
                     console.error('Fetch 오류:', error);
                     alert("로그인에 실패했습니다. 다시 시도해주세요.");

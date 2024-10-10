@@ -29,4 +29,6 @@ public interface PostCustomRepository {
     void updateViewLog(PostViewLog postViewLog);
 
     void saveViewLog(PostViewLog postViewLog);
+
+    void deleteComment(String cmntId);
 }

@@ -18,36 +18,37 @@
             }
         },
         fn : {
-            selectComment: function() {
+            selectComment: async function() {
                 const postId = $('#postView_info').data('id');
 
+                try {
+                    const response = await fetch(`/post/selectComment?postId=${postId}`, {
+                        method: 'GET'
+                    });
 
-                const promiseGet = url => {
-                    return new Promise((resolve,reject) => {
-                        const xhr = new XMLHttpRequest();
+                    if (!response.ok) {
+                        throw new Error('네트워크 응답이 올바르지 않습니다.');
+                    }
 
-                        xhr.open('GET',url);
-                        xhr.send();
-                        xhr.onload = () => {
-                            if (xhr.status === 200) {
-                                resolve(xhr.response);
-                            } else {
-                                reject(new Error(xhr.status));
-                            }
-                        }
-                    })
-                };
-                promiseGet(`/post/selectComment?postId=${postId}`)
-                    .then(res => {
-                    debugger;
-                        const cmtList = JSON.parse(res);
-                        $('#postView_commentList').html(Mustache.render($('#postView_cmtTemplate').html(),{comments:cmtList}))
-                    })
-                    .catch();
+                    const cmtList = await response.json();
+                    cmtList.forEach(function(item,i) {
+                        item.content = cmm.util.replaceContentToView(item.content);
+                    });
+                    $('#postView_commentList').html(Mustache.render($('#postView_cmtTemplate').html(),{comments:cmtList}));
+                    PostView.fn.addCommentEvent();
+                } catch (error) {
+                    console.error('Fetch 오류:', error);
+                }
 
             },
             insertComment: function() {
-                const content = $('#postView_comment').val();
+                let content = $('#postView_comment').val();
+                // 유효성검사
+                if(cmm.string.isEmpty(content)) {
+                    alert('댓글을 입력하세요.');
+                    return;
+                }
+                content = cmm.util.makeContentForm(content);
                 const postId = $('#postView_info').data('id');
 
                 const promiseGet = url => {
@@ -88,7 +89,6 @@
 
                     const data = await response.text();
                     const postInfoDiv = document.getElementById('postView_recommend');
-                    debugger;
                     if(data == '1')  {
                         postInfoDiv.innerText = parseInt(postInfoDiv.innerText) + 1;
                     } else if(data == '2'){
@@ -96,7 +96,39 @@
                     }
                 } catch (error) {
                     console.error('Fetch 오류:', error);
-                    alert("로그인에 실패했습니다. 다시 시도해주세요.");
+                }
+            },
+            addCommentEvent: function() {
+                const delCommentBtn = document.getElementById('postView_delCmntBtn');
+                const modiCmntBtn = document.getElementById('postView_modifyCmntBtn');
+
+                //댓글 삭제
+                delCommentBtn.addEventListener('click', PostView.fn.deleteComment);
+                //댓글 수정
+                modiCmntBtn.addEventListener('click',function(e) {
+
+                });
+
+            },
+            deleteComment: async function(e) {
+                const commentItem = e.target.closest('.comment_item');
+                const cmntId = commentItem.dataset.cmntId;
+                try {
+                    const response = await fetch('/post/deleteComment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: cmntId
+                    });
+
+                    if(!response.ok) {
+                        throw new Error('네트워크 응답이 올바르지 않습니다.');
+                    }
+                    PostView.fn.selectComment();
+
+                } catch(error) {
+                    console.error('Fetch 오류:', error);
                 }
             }
         },

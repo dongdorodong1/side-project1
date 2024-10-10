@@ -45,7 +45,7 @@
           <textarea class="form-control" id="postView_comment" rows="3" th:attr="placeholder=${session.loginMember != null ? '댓글을 입력하세요' : ''},
           disabled=${session.loginMember == null ? 'disabled' : null}"required style="resize: none"></textarea>
           <th:block th:if="${session.loginMember == null}">
-              <p class="relative left-1 bottom-3.5"><span class="text-sm text-gray-500">댓글을 쓰려면 <a href="/login/signIn?returnUrl=login/">로그인</a>이 필요합니다.</span></p>
+              <p class="relative left-1 bottom-3.5"><span class="text-sm text-gray-500">댓글을 쓰려면 <a th:href="@{/login/signIn(redirectURL=${'/post/postView/' + post.postId})}">로그인</a>이 필요합니다.</span></p>
           </th:block>
           <div class="text-md-end margin-updn10">
               <button id="postView_commentRegBtn" class="btn btn-primary"
@@ -61,13 +61,21 @@
   </div>
 <script type="text/html" id="postView_cmtTemplate">
     {{#comments}}
-        <li class="list-group-item align-items-center">
+        <li class="list-group-item align-items-center comment_item" data-cmnt-id="{{id}}">
             <div>
                 <div class="flex justify-content-between w-100">
                     <div><strong>{{memberDto.username}}</strong> <span class="small">{{regDt}}</span></div>
-                    <div><button>수정</button><button>삭제</button></div>
+                    <div class="dropdown">
+                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-solid fa-ellipsis"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                            <li><a class="dropdown-item" href="javascript:void(0);" id="postView_modifyCmntBtn">수정</a></li>
+                            <li><a class="dropdown-item" href="javascript:void(0);" id="postView_delCmntBtn">삭제</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="content-pad margin-updn10">{{content}}</div>
+                <pre class="content-pad margin-updn10">{{content}}</pre>
             </div>
         </li>
     {{/comments}}

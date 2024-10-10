@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.post.repository.PostCommentRepository;
-import play.board1.post.repository.PostJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class PostServiceTest {
 
-    private PostJpaRepository postJpaRepository;
     private PostCommentRepository commentRepository;
     @Test
     public void paging() {

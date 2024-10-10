@@ -14,6 +14,8 @@
 </th:block>
 
 <body layout:fragment="content">
+<input type="hidden" th:value="${redirectURL}" id="signIn_redirectURL"/>
+
 <main class="form-signin">
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 

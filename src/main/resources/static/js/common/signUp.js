@@ -84,7 +84,6 @@
                     method: 'GET'
                 })
                     .then(response => {
-                        debugger;
                         if (response.ok) {
                             return response.text();
                         } else {

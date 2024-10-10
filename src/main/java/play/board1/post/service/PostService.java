@@ -215,4 +215,9 @@ public class PostService {
             postDto.setPostViewLogDto(new PostViewLogDto(1));
         }
     }
+
+    @Transactional
+    public void deleteComment(String cmntId) {
+        postRepository.deleteComment(cmntId);
+    }
 }
