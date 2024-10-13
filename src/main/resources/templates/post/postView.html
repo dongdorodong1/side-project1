@@ -41,7 +41,7 @@
           </button>
       </div>
           <div class="my-5 border-gray-500/30 border-t"></div>
-      <div class="cmt-form-group">
+      <div class="cmnt-form-group">
           <textarea class="form-control" id="postView_comment" rows="3" th:attr="placeholder=${session.loginMember != null ? '댓글을 입력하세요' : ''},
           disabled=${session.loginMember == null ? 'disabled' : null}"required style="resize: none"></textarea>
           <th:block th:if="${session.loginMember == null}">
@@ -59,19 +59,19 @@
 
       </div>
   </div>
-<script type="text/html" id="postView_cmtTemplate">
+<script type="text/html" id="postView_cmntTemplate">
     {{#comments}}
         <li class="list-group-item align-items-center comment_item" data-cmnt-id="{{id}}">
             <div>
                 <div class="flex justify-content-between w-100">
                     <div><strong>{{memberDto.username}}</strong> <span class="small">{{regDt}}</span></div>
                     <div class="dropdown">
-                        <button class="dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-solid fa-ellipsis"></i>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                            <li><a class="dropdown-item" href="javascript:void(0);" id="postView_modifyCmntBtn">수정</a></li>
-                            <li><a class="dropdown-item" href="javascript:void(0);" id="postView_delCmntBtn">삭제</a></li>
+                        <ul class="dropdown-menu" >
+                            <li><a class="dropdown-item _modifyCmntBtn" href="javascript:void(0);">수정</a></li>
+                            <li><a class="dropdown-item _delCmntBtn" href="javascript:void(0);">삭제</a></li>
                         </ul>
                     </div>
                 </div>
@@ -79,6 +79,10 @@
             </div>
         </li>
     {{/comments}}
+</script>
+
+<script type="text/html" id="postView_cmntUpdateTemplate">
+    <textarea class="form-control _updateCmntForm" rows="3" required style="resize: none"></textarea>
 </script>
 </body>
 </html>

@@ -123,13 +123,13 @@ public class PostController {
 
     /**
      * 댓글을 등록한다.
-     * @param cmtDto
+     * @param cmntDto
      * @return
      */
     @PostMapping("/insertComment")
-    public @ResponseBody ResponseEntity<Long> insertComment(@RequestBody PostCommentDto cmtDto, HttpSession session) {
-        cmtDto.setSession(session);
-        Long commentId = postService.insertComment(cmtDto);
+    public @ResponseBody ResponseEntity<Long> insertComment(@RequestBody PostCommentDto cmntDto, HttpSession session) {
+        cmntDto.setSession(session);
+        Long commentId = postService.insertComment(cmntDto);
         return new ResponseEntity<>(commentId, HttpStatusCode.valueOf(200));
     }
 

@@ -22,11 +22,11 @@ public class PostCommentDto {
     private MemberDto memberDto;
     private HttpSession session;
 
-    public PostCommentDto(PostComment cmt) {
-        this.content = cmt.getContent();
-        this.id = cmt.getId();
-        this.regDt = Chrono.timesAgo(cmt.getRegDt());
-        Member member = cmt.getMember();
+    public PostCommentDto(PostComment cmnt) {
+        this.content = cmnt.getContent();
+        this.id = cmnt.getId();
+        this.regDt = Chrono.timesAgo(cmnt.getRegDt());
+        Member member = cmnt.getMember();
         MemberDto memberDto = new MemberDto();
         memberDto.setUsername(member.getUsername());
         this.memberDto = memberDto;

@@ -30,11 +30,11 @@
                         throw new Error('네트워크 응답이 올바르지 않습니다.');
                     }
 
-                    const cmtList = await response.json();
-                    cmtList.forEach(function(item,i) {
+                    const cmntList = await response.json();
+                    cmntList.forEach(function(item,i) {
                         item.content = cmm.util.replaceContentToView(item.content);
                     });
-                    $('#postView_commentList').html(Mustache.render($('#postView_cmtTemplate').html(),{comments:cmtList}));
+                    $('#postView_commentList').html(Mustache.render($('#postView_cmntTemplate').html(),{comments:cmntList}));
                     PostView.fn.addCommentEvent();
                 } catch (error) {
                     console.error('Fetch 오류:', error);
@@ -99,18 +99,34 @@
                 }
             },
             addCommentEvent: function() {
-                const delCommentBtn = document.getElementById('postView_delCmntBtn');
-                const modiCmntBtn = document.getElementById('postView_modifyCmntBtn');
+                const delCommentBtn = document.querySelectorAll('._delCmntBtn');
+                const modiCmntBtn = document.querySelectorAll('._modifyCmntBtn');
 
                 //댓글 삭제
-                delCommentBtn.addEventListener('click', PostView.fn.deleteComment);
+                // delCommentBtn.addEventListener('click', PostView.fn.deleteComment);
                 //댓글 수정
-                modiCmntBtn.addEventListener('click',function(e) {
+                // modiCmntBtn.addEventListener('click',PostView.fn.onModifyComment);
 
+                delCommentBtn.forEach(function(item) {
+                    item.addEventListener('click',PostView.fn.deleteComment );
                 });
 
+                modiCmntBtn.forEach(function(item) {
+                    item.addEventListener('click',PostView.fn.onModifyComment );
+                });
+
+
+            },
+            onModifyComment: function() {
+                debugger;
+                const cmntLi = this.closest('li.comment_item');
+
+                const template = document.getElementById('postView_cmntUpdateTemplate').innerHTML;
+                // const renderedHtml = Mustache.render(template, { comments: cmntList });
+                cmntLi.innerHTML = template;
             },
             deleteComment: async function(e) {
+                debugger;
                 const commentItem = e.target.closest('.comment_item');
                 const cmntId = commentItem.dataset.cmntId;
                 try {

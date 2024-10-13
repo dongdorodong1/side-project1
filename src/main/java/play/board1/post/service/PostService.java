@@ -127,17 +127,17 @@ public class PostService {
 
     /**
      * 게시물에 댓글을 입력한다
-     * @param cmtDto
+     * @param cmntDto
      * @return
      */
     @Transactional
-    public Long insertComment(PostCommentDto cmtDto) {
-        Optional<Post> findPost = postRepository.findById(cmtDto.getPostId());
-        MemberDto sessionMember = (MemberDto) cmtDto.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
+    public Long insertComment(PostCommentDto cmntDto) {
+        Optional<Post> findPost = postRepository.findById(cmntDto.getPostId());
+        MemberDto sessionMember = (MemberDto) cmntDto.getSession().getAttribute(SessionConst.LOGIN_MEMBER);
         Member member = memberRepository.findByUserId(sessionMember.getUserId())
                 .orElseThrow(() -> new MemberException("세션이 존재하지 않습니다."));
         if(findPost.isPresent()) {
-            PostComment comment = new PostComment(cmtDto.getContent(), findPost.get(),member);
+            PostComment comment = new PostComment(cmntDto.getContent(), findPost.get(),member);
             commentRepository.save(comment);
             return 1L;
         }
