@@ -1,5 +1,6 @@
 package play.board1.post.repository;
 
+import play.board1.post.dto.PostCommentDto;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.PostViewLog;
@@ -31,4 +32,8 @@ public interface PostCustomRepository {
     void saveViewLog(PostViewLog postViewLog);
 
     void deleteComment(String cmntId);
+
+    PostComment findCommentById(Long id);
+
+    void updatePostComment(PostCommentDto cmntDto);
 }

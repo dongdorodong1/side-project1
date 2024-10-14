@@ -62,9 +62,9 @@
 <script type="text/html" id="postView_cmntTemplate">
     {{#comments}}
         <li class="list-group-item align-items-center comment_item" data-cmnt-id="{{id}}">
-            <div>
+            <div class="_cmntView">
                 <div class="flex justify-content-between w-100">
-                    <div><strong>{{memberDto.username}}</strong> <span class="small">{{regDt}}</span></div>
+                    <div class="_user"><strong>{{memberDto.username}}</strong> <span class="small">{{regDt}}</span></div>
                     <div class="dropdown">
                         <button class="dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-solid fa-ellipsis"></i>
@@ -75,14 +75,23 @@
                         </ul>
                     </div>
                 </div>
-                <pre class="content-pad margin-updn10">{{content}}</pre>
+                <pre class="content-pad margin-updn10 _contents">{{content}}</pre>
             </div>
         </li>
     {{/comments}}
 </script>
 
 <script type="text/html" id="postView_cmntUpdateTemplate">
+    <div class="_editForm">
+    <div><strong>{{userName}}</strong></div>
+    <div>
     <textarea class="form-control _updateCmntForm" rows="3" required style="resize: none"></textarea>
+    </div>
+    <div class="button-box-end">
+        <button class="_cancelModiCmnt">취소</button>
+        <button class="_updateCmnt">작성</button>
+    </div>
+    </div>
 </script>
 </body>
 </html>

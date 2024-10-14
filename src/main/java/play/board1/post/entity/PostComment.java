@@ -27,9 +27,13 @@ public class PostComment {
     private Post post;
 
     /**
-     * 수정일
+     * 작성일
      */
     private LocalDateTime regDt;
+    /**
+     * 수정일
+     */
+    private LocalDateTime updDt;
 
     /**
      * 작성자
@@ -46,5 +50,10 @@ public class PostComment {
     }
 
     public PostComment() {
+    }
+
+    public void updateComment(String content) {
+        this.updDt = LocalDateTime.now();
+        this.content = content;
     }
 }

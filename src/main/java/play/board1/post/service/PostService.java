@@ -220,4 +220,10 @@ public class PostService {
     public void deleteComment(String cmntId) {
         postRepository.deleteComment(cmntId);
     }
+
+    @Transactional
+    public void updateComment(PostCommentDto cmntDto) {
+        PostComment comment = postRepository.findCommentById(cmntDto.getId());
+        postRepository.updatePostComment(cmntDto);
+    }
 }

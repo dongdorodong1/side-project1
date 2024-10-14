@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import play.board1.post.dto.PostCommentDto;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.PostViewLog;
@@ -105,4 +106,17 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
         PostComment postComment = em.find(PostComment.class, Long.parseLong(cmntId));
         em.remove(postComment);
     }
+
+    @Override
+    public PostComment findCommentById(Long id) {
+        return em.find(PostComment.class, id);
+    }
+
+    @Override
+    public void updatePostComment(PostCommentDto cmntDto) {
+        PostComment comment = findCommentById(cmntDto.getId());
+        comment.updateComment(cmntDto.getContent());
+    }
+
+
 }

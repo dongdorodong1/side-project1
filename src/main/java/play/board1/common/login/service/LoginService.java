@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import play.board1.common.dto.MemberDto;
 import play.board1.common.dto.SignUpMemberDto;
+import play.board1.common.exception.MemberException;
 import play.board1.post.entity.Member;
 import play.board1.common.login.repository.LoginRepository;
 import play.board1.common.login.repository.MemberRepository;
@@ -27,7 +28,7 @@ public class LoginService {
 
     public Member signIn(MemberDto member) {
         Optional<Member> findMember = memberRepository.findByUserId(member.getUserId());
-        findMember.orElseThrow(IllegalStateException::new);
+        findMember.orElseThrow(MemberException::new);
 
         return findMember.get();
     }

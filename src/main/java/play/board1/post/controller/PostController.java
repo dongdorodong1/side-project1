@@ -139,10 +139,21 @@ public class PostController {
      * @return
      */
     @PostMapping("/deleteComment")
-    public @ResponseBody ResponseEntity<String> deleteComment(@RequestBody String cmntId, HttpSession session) {
+    public ResponseEntity<String> deleteComment(@RequestBody String cmntId, HttpSession session) {
 
         postService.deleteComment(cmntId);
         return new ResponseEntity<>(cmntId, HttpStatusCode.valueOf(200));
+    }
+
+    /**
+     * 댓글을 수정한다.
+     * @param cmntDto
+     * @return
+     */
+    @PostMapping("/updateComment")
+    public ResponseEntity<String> updateComment(@RequestBody PostCommentDto cmntDto, HttpSession session) {
+        postService.updateComment(cmntDto);
+        return ResponseEntity.ok("ok");
     }
 
     /**
