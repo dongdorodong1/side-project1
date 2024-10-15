@@ -140,13 +140,16 @@
              * 댓글 수정모드로 전환
              */
             onCmntEditMode: function() {
-                debugger;
                 const cmntLi = this.closest('li.comment_item');
+                // view모드 숨기기
                 cmntLi.querySelector('._cmntView').style.display = 'none';
+                //기존 내용
                 const contents = cmntLi.querySelector('._contents').innerHTML;
                 const userName = cmntLi.querySelector('._user').querySelector('strong').innerHTML;
                 const template = document.getElementById('postView_cmntUpdateTemplate').innerHTML;
+
                 const renderedHtml = Mustache.render(template, { userName: userName });
+                //html 추가하기
                 cmntLi.insertAdjacentHTML("beforeend", renderedHtml);
                 cmntLi.querySelector('._updateCmntForm').innerHTML = contents;
             },
@@ -180,12 +183,15 @@
                 const commentLi = e.target.closest('.comment_item');
                 const cmntId = commentLi.dataset.cmntId;
                 const content = commentLi.querySelector('._updateCmntForm').value;
+                if(cmm.string.isEmpty(content)) {
+                    alert('댓글 내용을 입력하세요.');
+                    return;
+                }
 
                 const updateForm = {
                     id:cmntId,
                     content:content
                 }
-                debugger
                 try {
                     const response = await fetch('/post/updateComment', {
                         method: 'POST',
@@ -198,7 +204,12 @@
                     if(!response.ok) {
                         throw new Error('네트워크 응답이 올바르지 않습니다.');
                     }
-                    PostView.fn.selectComment();
+                    commentLi.querySelector('._contents').innerHTML = content;
+                    commentLi.querySelector('._cmntView').style.display = 'block';
+                    commentLi.querySelector('._editForm').remove();
+
+
+                    // PostView.fn.selectComment();
 
                 } catch(error) {
                     console.error('Fetch 오류:', error);
