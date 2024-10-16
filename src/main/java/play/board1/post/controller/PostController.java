@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import play.board1.common.exception.MemberException;
 import play.board1.common.session.SessionConst;
 import play.board1.post.dto.PostCommentDto;
@@ -178,4 +179,6 @@ public class PostController {
         postDto.setSession(session);
         return ResponseEntity.ok(postService.addPostLike(postDto));
     }
+
+
 }
