@@ -3,6 +3,7 @@ package play.board1.common.file.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import play.board1.common.dto.CmmFileDto;
 import play.board1.common.entity.CmmFile;
@@ -14,19 +15,22 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CmmFileService {
 
     @Value("${file.dir}")
     private String fileDir;
     private final CmmFileRepository fileRepository;
 
+    @Transactional
     public CmmFileDto saveFile(MultipartFile file) throws IOException {
         String realFileName = file.getOriginalFilename();
         String localFileName = createLocalFileName(realFileName);
         String fileUrl = getFullPath(localFileName);
+        String ext = extractExt(realFileName);
         file.transferTo(new File(fileUrl));
         long fileSize = file.getSize();
-        CmmFile cmmFile = new CmmFile(fileSize, realFileName, localFileName, fileUrl);
+        CmmFile cmmFile = new CmmFile(fileSize, realFileName, localFileName, fileUrl,ext);
         fileRepository.saveFile(cmmFile);
 
         return new CmmFileDto(realFileName,localFileName,fileUrl,fileSize);

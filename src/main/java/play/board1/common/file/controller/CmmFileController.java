@@ -16,6 +16,7 @@ import play.board1.common.file.service.CmmFileService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,23 +31,23 @@ public class CmmFileController {
     private final CmmFileService fileService;
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<CmmFileDto> uploadFile(@RequestParam("files") List<MultipartFile> files, HttpServletRequest request) throws IOException {
+    public ResponseEntity<List<CmmFileDto>> uploadFile(@RequestParam("files") List<MultipartFile> files, HttpServletRequest request) throws IOException {
         // 파일 저장 로직 처리
-        CmmFileDto cmmFileDto = null;
-
-
+        List<CmmFileDto> cmmFileDtoList = new ArrayList<>();
         for (MultipartFile file : files) {
+            CmmFileDto cmmFileDto = new CmmFileDto();
             if (!file.isEmpty()) {
-                 cmmFileDto = fileService.saveFile(file);
+                cmmFileDto = fileService.saveFile(file);
             }
             log.info("request={}", request);
             log.info("multipartFile={}", file);
-            String fullPath = fileDir + file.getOriginalFilename();
+            String fullPath = fileDir + cmmFileDto.getLocalFileName();
             log.info("파일 저장 fullPath={}", fullPath);
+            cmmFileDtoList.add(cmmFileDto);
             file.transferTo(new File(fullPath));
         }
 
         // 업로드된 파일에 대한 응답 (예: 파일 ID 리스트 반환)
-        return ResponseEntity.ok(cmmFileDto);
+        return ResponseEntity.ok(cmmFileDtoList);
     }
 }

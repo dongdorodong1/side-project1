@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import play.board1.common.exception.BaseException;
+import play.board1.common.exception.FileException;
 import play.board1.common.exception.MemberException;
 
 @Slf4j
@@ -16,5 +17,11 @@ public class CmmExceptionAdvice {
     @ExceptionHandler(MemberException.class)
     public BaseException memberException(MemberException me) {
         return new BaseException("BAD-REQUEST", me.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FileException.class)
+    public BaseException fileException(FileException fe) {
+        return new BaseException("BAD-REQUEST", fe.getMessage());
     }
 }

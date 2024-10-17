@@ -14,7 +14,7 @@ import play.board1.post.service.PostService;
 
 import java.time.LocalDateTime;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class initData {
 
