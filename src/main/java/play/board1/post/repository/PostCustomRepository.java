@@ -18,14 +18,13 @@ public interface PostCustomRepository {
 
     Post findBoard(Long postId);
 
-    Long deleteBoard(Long id);
-
     Post findBoardById(Long postId);
+
     Long insertComment(PostComment comment);
 
     List<PostComment> selectComment(Long postId);
 
-    Optional<PostViewLog> existViewLog(Long postId, Long memberId);
+    PostViewLog existViewLog(Long postId, Long memberId);
 
     void updateViewLog(PostViewLog postViewLog);
 

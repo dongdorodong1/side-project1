@@ -186,7 +186,7 @@ public class PostService {
     public void insertPostViewLog(PostDto postDto) {
         Optional<Post> postOpt = postRepository.findByPostId(postDto.getPostId());
         HttpSession session = postDto.getSession();
-        Optional<PostViewLog> postViewLogOpt;
+        PostViewLog postViewLog;
         Member loginMember;
         Optional<MemberDto> sessionMemberOpt = Optional.ofNullable((MemberDto) session.getAttribute(SessionConst.LOGIN_MEMBER));
         Optional<Member> loginMemberOpt = sessionMemberOpt
@@ -196,9 +196,9 @@ public class PostService {
                 .orElseThrow(() -> new IllegalStateException("없는 게시물입니다."));
         if (loginMemberOpt.isPresent()) {
             loginMember = loginMemberOpt.get();
-            postViewLogOpt = postRepository.existViewLog(post.getId(), loginMember.getId());
+            postViewLog = postRepository.existViewLog(post.getId(), loginMember.getId());
         } else {
-            postViewLogOpt = postRepository.existViewLog(post.getId(), null);
+            postViewLog = postRepository.existViewLog(post.getId(), null);
             loginMember = null;
         }
 
@@ -206,8 +206,7 @@ public class PostService {
         post.addViewCnt();
         postDto.setViewCnt(post.getViewCnt());
 
-        if(postViewLogOpt.isPresent()) {
-            PostViewLog postViewLog = postViewLogOpt.get();
+        if(null != postViewLog ) {
             postRepository.updateViewLog(postViewLog);
             postDto.setPostViewLogDto(new PostViewLogDto(postViewLog.getViewCnt()));
         } else {

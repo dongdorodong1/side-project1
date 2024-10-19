@@ -1,5 +1,9 @@
 package play.board1;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -24,5 +28,14 @@ public class WebConfig implements WebMvcConfigurer {
                         "/css/**",
                         "/js/**");
 
+    }
+
+    /** 쿼리DSL 설정부분 */
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Bean
+    public JPAQueryFactory queryFactory() {
+        return new JPAQueryFactory(entityManager);
     }
 }

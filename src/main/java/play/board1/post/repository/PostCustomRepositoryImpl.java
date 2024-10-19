@@ -8,15 +8,22 @@ import play.board1.post.dto.PostCommentDto;
 import play.board1.post.entity.Post;
 import play.board1.post.entity.PostComment;
 import play.board1.post.entity.PostViewLog;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.util.List;
 import java.util.Optional;
+
+import static play.board1.post.entity.QMember.member;
+import static play.board1.post.entity.QPost.post;
+import static play.board1.post.entity.QPostViewLog.postViewLog;
 
 @Repository
 @RequiredArgsConstructor
 public class PostCustomRepositoryImpl implements PostCustomRepository{
 
     private final EntityManager em;
+    private final JPAQueryFactory queryFactory;
+
     public void insertPost(Post post) {
         em.persist(post);
     }
@@ -34,27 +41,14 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
     }
 
     public Post findBoard(Long postId) {
-//        em.createQuery("select b from Board b join fetch b.comments where b.id = :postId");
-//        Board post = em.find(Board.class, postId);
-//        return post;
-
-        return em.createQuery("select b from Post b left join fetch b.comments where b.id = :postId", Post.class)
-                .setParameter("postId", postId)
-                .getSingleResult();
+        return queryFactory
+                .select(post)
+                .from(post)
+                .leftJoin(post.comments).fetchJoin()
+                .where(post.id.eq(postId))
+                .fetchOne();
     }
 
-    public Long deleteBoard(Long id) {
-        Post findPost = em.find(Post.class, id);
-        em.remove(findPost);
-        return findPost.getId();
-    }
-
- /*   public Long updatePost(Board post) {
-        Board updateBoard = em.find(Board.class, post.getId());
-        updateBoard.updatePost(post);
-        em.persist(updateBoard);
-        return updateBoard.getId();
-    }*/
 
     public Post findBoardById(Long postId) {
         return em.find(Post.class, postId);
@@ -72,19 +66,21 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
     }
 
     @Override
-    public Optional<PostViewLog> existViewLog(Long postId, Long memberId) {
+    public PostViewLog existViewLog(Long postId, Long memberId) {
 
-        // TODO 쿼리 dsl로 is null 적용하기
         try {
-            PostViewLog log = em.createQuery("select v from PostViewLog v where v.post.id =:postId and v.member.id = :memberId", PostViewLog.class)
-                    .setParameter("postId", postId)
-                    .setParameter("memberId", memberId)
-                    .getSingleResult();
-            return Optional.of(log);
+            return queryFactory
+                    .selectFrom(postViewLog)
+                    .where(
+                      postViewLog.post.id.eq(postId),
+                        postViewLog.member.id.eq(memberId)
+                    )
+                    .fetchOne();
         } catch (NoResultException e) {
-            return Optional.empty();  // 결과가 없을 경우 Optional.empty() 반환
+            return null;  // 결과가 없을 경우 Optional.empty() 반환
         }
     }
+
 
     @Override
     public void updateViewLog(PostViewLog postViewLog) {
