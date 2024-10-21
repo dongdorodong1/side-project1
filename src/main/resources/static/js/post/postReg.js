@@ -22,20 +22,24 @@ debugger;
                 if(!PostReg.fn.validation()) {
                     return false;
                 }
-
+                content = cmm.util.makeContentForm(content);
+                let postData = {
+                    subject: subject,
+                    content: content
+                }
                 // 파일 업로드가 완료된 후 게시물 등록 처리
-                PostReg.fn.uploadFile(function(fileIds) {
-                    const postData = {
+                PostReg.fn.uploadFile(function(files) {
+                    postData = {
                         subject: subject,
                         content: content,
-                        fileIds: fileIds // 첨부된 파일이 있으면 파일 ID 리스트 포함
+                        files: files // 첨부된 파일이 있으면 파일 ID 리스트 포함
                     };
                 });
 
-                content = cmm.util.makeContentForm(content);
+                debugger;
                 const options = {
                     url: '/post/insertPost',
-                    data: {subject: subject, content: content},
+                    data: postData,
                     type: 'post',
                     success: function (res, statusText) {
                         debugger;
@@ -60,40 +64,26 @@ debugger;
                 }
                 return true;
             },
-            uploadFile: function(callback) {
-                debugger;
+            uploadFile: async function(callback) {
                 const fileInput = document.getElementById('postReg_file');
                 if (fileInput.files.length > 0) {
                     const formData = new FormData();
                     for (let i = 0; i < fileInput.files.length; i++) {
                         formData.append('files', fileInput.files[i]);
                     }
-                debugger;
-                    fetch('/common/uploadFile',{
+
+                    await fetch('/common/uploadFile',{
                         method: 'POST',
                         body: formData
                     })
                         .then(response => response.json())
                         .then(data => {
                             debugger;
-                            console.log('Success', data)
+                            callback(data);
                         })
                         .catch((error) => {
                             console.error('Error', error)
                         });
-
-                   /* $.ajax({
-                        url: '/post/uploadFile',
-                        data: formData,
-                        type: 'post',
-                        processData: false,
-                        contentType: false,
-                        success: function (res) {
-                            if (res.success) {
-                                callback(res.fileIds); // 파일 업로드 성공 시 파일 ID 반환
-                            }
-                        }
-                    });*/
                 } else {
                     callback([]); // 파일이 없으면 빈 배열 반환
                 }

@@ -44,7 +44,6 @@ public class CmmFileController {
             String fullPath = fileDir + cmmFileDto.getLocalFileName();
             log.info("파일 저장 fullPath={}", fullPath);
             cmmFileDtoList.add(cmmFileDto);
-            file.transferTo(new File(fullPath));
         }
 
         // 업로드된 파일에 대한 응답 (예: 파일 ID 리스트 반환)
